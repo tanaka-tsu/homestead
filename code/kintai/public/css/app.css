@@ -1,0 +1,10 @@
+.py-4 {
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+.mb-3 {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
