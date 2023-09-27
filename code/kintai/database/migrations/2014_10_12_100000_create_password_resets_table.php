@@ -11,6 +11,15 @@ return new class extends Migration
      *
      * @return void
      */
+    // public function up()
+    // {
+    //     Schema::create('password_resets', function (Blueprint $table) {
+    //         $table->string('employee_id')->index();
+    //         $table->string('token');
+    //         $table->timestamp('created_at')->nullable();
+    //     });
+    // }
+
     public function up()
     {
         Schema::create('password_resets', function (Blueprint $table) {
