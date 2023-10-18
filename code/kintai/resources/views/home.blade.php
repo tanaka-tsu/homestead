@@ -8,11 +8,10 @@
                 {{ __('勤怠表') }}
             </a>
 
-            <form method="POST" action="">
+            <form method="POST" action="begin_work">
                 @csrf
 
-                <button>{{ __('出勤') }}</button>
-                <label>休憩時間<input type="time"></label>
+                <button type="submit">{{ __('出勤') }}</button>
             </form>
 
             {{-- <div class="card">
