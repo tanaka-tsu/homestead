@@ -4,9 +4,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <a href="{{ route('record') }}">
+                {{ __('勤怠表') }}
+            </a>
+
             <form method="POST" action="">
-                <button>{{ true ? '出勤' : '退勤' }}</button>
-                <button>休憩{{ true ? '開始' : '終了' }}</button>
+                @csrf
+
+                <button>{{ __('出勤') }}</button>
+                <label>休憩時間<input type="time"></label>
             </form>
 
             {{-- <div class="card">

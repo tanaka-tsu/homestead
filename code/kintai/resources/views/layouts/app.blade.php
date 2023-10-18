@@ -69,12 +69,6 @@
                                         @csrf
                                     </form>
                                 </div>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('record') }}">
-                                        {{ __('勤怠表') }}
-                                    </a>
-                                </div>
                             </li>
                         @endguest
                     </ul>

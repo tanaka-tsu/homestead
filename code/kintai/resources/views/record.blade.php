@@ -3,6 +3,10 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+        <a href="{{ route('home') }}">
+            {{ __('戻る') }}
+        </a>
+        
         <h1>勤怠表</h1>
         <div class="col-md-8">
             <table>
@@ -16,13 +20,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                @for (int $i = 0; $i <= 31; $i++)
+                @for ($i = 1; $i <= 31; $i++)
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $i }}日</td>
+                        <td>{{ $attendance['day'.$i.'_begin'] }}</td>
+                        <td>{{ $attendance['day'.$i.'_finish'] }}</td>
+                        <td>{{ $attendance['day'.$i.'_break'] }}</td>
+                        <td>calculating...</td>
                     </tr>
                 @endfor
                 </tbody>
