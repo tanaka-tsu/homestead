@@ -8,11 +8,20 @@
                 {{ __('勤怠表') }}
             </a>
 
-            <form method="POST" action="begin_work">
-                @csrf
+            @if ($status == 'before')
+                <form method="POST" action="begin_work">
+                    @csrf
 
-                <button type="submit">{{ __('出勤') }}</button>
-            </form>
+                    <button type="submit">{{ __('出勤') }}</button>
+                </form>
+            @else
+                <form>
+                    @csrf
+
+                    <button type="submit">{{ __('退勤') }}</button>
+                    <label>休憩時間：<input type="time"></label>
+                </form>
+            @endif
 
             {{-- <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
