@@ -6,7 +6,7 @@
         <a href="{{ route('home') }}">
             {{ __('戻る') }}
         </a>
-        
+
         <h1>勤怠表</h1>
         <div class="col-md-8">
             <table>
@@ -23,9 +23,9 @@
                 @for ($i = 1; $i <= 31; $i++)
                     <tr>
                         <td>{{ $i }}日</td>
-                        <td>{{ $attendance['day'.$i.'_begin'] }}</td>
-                        <td>{{ $attendance['day'.$i.'_finish'] }}</td>
-                        <td>{{ $attendance['day'.$i.'_break'] }}</td>
+                        <td>{{ mb_substr($attendance['day'.$i.'_begin'], 0, 5) }}</td>
+                        <td>{{ mb_substr($attendance['day'.$i.'_finish'], 0, 5) }}</td>
+                        <td>{{ mb_substr($attendance['day'.$i.'_break'], 0, 5) }}</td>
                         <td>calculating...</td>
                     </tr>
                 @endfor

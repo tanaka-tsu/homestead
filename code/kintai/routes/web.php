@@ -24,3 +24,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/record', [App\Http\Controllers\AttendanceController::class, 'show'])->name('record');
 
 Route::post('/begin_work', [App\Http\Controllers\AttendanceController::class, 'beginWork'])->name('begin_work');
+
+Route::post('/finish_work', [App\Http\Controllers\AttendanceController::class, 'finishWork'])->name('finish_work');

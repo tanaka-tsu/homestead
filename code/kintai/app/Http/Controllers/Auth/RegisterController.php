@@ -70,7 +70,7 @@ class RegisterController extends Controller
             'employee_id' => $data['employee_id'],
             'name' => $data['name'],
             'office' => $data['office'],
-            // 'email' => $data['email'],
+            'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
     }

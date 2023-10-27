@@ -19,9 +19,9 @@ class CreateAttendancesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('year_month');
             for ($i = 1; $i <= 31; $i++) {
-                $table->time('day'.$i.'_begin')->nullable();
-                $table->time('day'.$i.'_finish')->nullable();
-                $table->time('day'.$i.'_break')->nullable();
+                $table->time('day'.$i.'_begin')->format('H:i')->nullable();
+                $table->time('day'.$i.'_finish')->format('H:i')->nullable();
+                $table->time('day'.$i.'_break')->format('H:i')->nullable();
             }
             $table->timestamps();
             $table

@@ -32,13 +32,23 @@ class HomeController extends Controller
             ->where('year_month', $year_month)
             ->first();
 
-        $day = $current_time->format('j');
-        $column_name = 'day'.$day.'_begin';
+        if (!$attendance) {
+            $attendance = new Attendance();
+            $attendance->user_id = $user_id;
+            $attendance->year_month = $year_month;
+            $attendance->save();
+        }
 
-        if ($attendance->$column_name === null) {
+        $day = $current_time->format('j');
+        $begin_column = 'day'.$day.'_begin';
+        $finish_column = 'day'.$day.'_finish';
+
+        if ($attendance->$begin_column === null) {
             $status = 'before_work';
-        } else {
+        } else if ($attendance->$finish_column === null) {
             $status = 'during_work';
+        } else {
+            $status = 'after_work';
         }
 
         return view('home', ['status' => $status]);
