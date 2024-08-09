@@ -1,0 +1,57 @@
+/*
+ヘッダー
+ */
+.navbar{
+    /* ヘッダー全体 */
+    background-color: #192f60;
+    padding: 10px;
+    margin: -10px -10px 0 -10px;
+}
+.navbar-brand{
+    /* タイトル */
+    font-size: 18px;
+    font-weight: bold;
+    color: azure;
+    text-decoration: none;
+}
+.collapse{
+    /* リンク全体 */
+    display: flex;
+    justify-content: space-between;
+}
+.navbar-nav,.nav-item{
+    /* 左右のリンク */
+    display: flex;
+    list-style: none;
+}
+.me-auto{
+    /* リンク左側 */
+}
+.ms-auto{
+    /* リンク右側 */
+}
+.nav-link,.dropdown-item{
+    /* リンクの文字とか */
+    margin-left: 15px;
+    text-decoration: none;
+    color: azure;
+}
+
+/*
+ヘッダーとメイン
+ */
+.container{
+
+}
+
+.card-header{
+    font-weight: bold;
+}
+.card-header,.mb-3,.mb-0{
+    margin: 15px;
+    text-align: center;
+}
+.form-check-label,.btn-link{
+    font-size: 14px;
+    text-decoration: none;
+}
