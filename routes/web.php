@@ -17,6 +17,10 @@ use App\Http\Controllers\KintaiController;
 
 Auth::routes();
 
+Route::get('/{id}', [HomeController::class,'index'])
+    ->name('home')
+    ->where('id','[0-9]+');
+
 Route::get('/', [KintaiController::class,'index'])
     ->name('create.kintais');
 

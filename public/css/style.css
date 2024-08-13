@@ -50,6 +50,11 @@
     /* コンテンツタイトル */
     font-weight: bold;
 }
+.re{
+    margin: 15px;
+    font-size: 14px;
+    text-decoration: none;
+}
 
 /*
 新規登録・ログインフォーム
@@ -82,4 +87,14 @@
     border: none;
     border-radius: 15px;
     cursor: pointer;
+}
+
+/*
+マイページ
+*/
+.year-month{
+    text-align: center;
+}
+.red-text {
+    color: red;
 }
