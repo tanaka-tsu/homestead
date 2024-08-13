@@ -1,6 +1,6 @@
 /*
 ヘッダー
- */
+*/
 .navbar{
     /* ヘッダー全体 */
     background-color: #192f60;
@@ -39,14 +39,21 @@
 
 /*
 ヘッダーとメイン
- */
+*/
 .container{
-
 }
-
+.error{
+    color: red;
+    text-align: center;
+}
 .card-header{
+    /* コンテンツタイトル */
     font-weight: bold;
 }
+
+/*
+新規登録・ログインフォーム
+*/
 .card-header,.mb-3,.mb-0{
     margin: 15px;
     text-align: center;
@@ -54,4 +61,25 @@
 .form-check-label,.btn-link{
     font-size: 14px;
     text-decoration: none;
+}
+
+/*
+打刻画面
+*/
+.today,.now{
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+.stamp-btn{
+    margin-top: 30px;
+    text-align: center;
+}
+.stamp-btn>button{
+    font-size: 36px;
+    padding: 5px 15px;
+    background-color: #00ac9a;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
 }

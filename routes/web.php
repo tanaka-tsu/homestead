@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KintaiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,11 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
-    ->name('home');
+Route::get('/', [KintaiController::class,'index'])
+    ->name('create.kintais');
+
+Route::post('/kintais/store', [KintaiController::class,'store'])
+    ->name('store.kintais');
