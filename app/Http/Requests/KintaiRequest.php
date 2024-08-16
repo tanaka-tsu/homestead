@@ -25,15 +25,15 @@ class KintaiRequest extends FormRequest
     {
         return [
             'user_id' => 'required',
-            'date' => 'required',
+            'this_month' => 'required',
         ];
     }
 
-    // public function messages()
-    // {
-    //     return [
-    //         'title.required' => 'タイトルは必須です',
-    //         'detail.required' => '詳細は必須です',
-    //     ];
-    // }
+    public function messages()
+    {
+        return [
+            'user_id.required' => 'user_idは必須です',
+            'this_month.required' => '年/月は必須です',
+        ];
+    }
 }

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KintaiController;
 
 /*
@@ -17,12 +16,20 @@ use App\Http\Controllers\KintaiController;
 
 Auth::routes();
 
-Route::get('/{id}', [HomeController::class,'index'])
-    ->name('home')
-    ->where('id','[0-9]+');
-
-Route::get('/', [KintaiController::class,'index'])
+Route::get('/', [KintaiController::class,'create'])
     ->name('create.kintais');
 
 Route::post('/kintais/store', [KintaiController::class,'store'])
     ->name('store.kintais');
+
+Route::get('/kintais/{id}/edit', [KintaiController::class,'edit'])
+    ->name('edit.kintais')
+    ->where('id','[0-9]+');
+
+Route::patch('/kintais/{id}/update', [KintaiController::class,'update'])
+    ->name('update.kintais')
+    ->where('id','[0-9]+');
+
+Route::get('/kintais/{userId}/show', [KintaiController::class,'show'])
+    ->name('show.kintais')
+    ->where('userId','[0-9]+');
