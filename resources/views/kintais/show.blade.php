@@ -3,12 +3,11 @@
 
 @section('content')
 {{-- @extends内の@yield('content')部分に@endsection部分までを表示させる宣言 --}}
-{{-- <a href="{{ route('edit.kintais', ['id' => $kintais->id]) }}" class="re">打刻画面へ</a> --}}
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">勤務表</div>
+                <div class="card-header">{{ Auth::user()->fullname }}さんの勤務表</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -26,8 +25,6 @@
                                     <th width="20%">日付</th>
                                     <th width="20%">出勤</th>
                                     <th width="20%">退勤</th>
-                                    <th width="20%">休憩出る</th>
-                                    <th width="20%">休憩戻る</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -39,8 +36,6 @@
                                         <td class="vertical-text {{ $isSunday ? 'red-text' : '' }}">{{ $day->isoFormat('MM/DD（ddd）') }}</td>
                                         <td>{{ isset($workStarts[$day->toDateString()]) ? \Carbon\Carbon::parse($workStarts[$day->toDateString()])->format('H:i:s') : '' }}</td>
                                         <td>{{ isset($workEnds[$day->toDateString()]) ? \Carbon\Carbon::parse($workEnds[$day->toDateString()])->format('H:i:s') : '' }}</td>
-                                        <td>{{ isset($breakkStarts[$day->toDateString()]) ? \Carbon\Carbon::parse($breakkStarts[$day->toDateString()])->format('H:i:s') : '' }}</td>
-                                        <td>{{ isset($breakEnds[$day->toDateString()]) ? \Carbon\Carbon::parse($breakEnds[$day->toDateString()])->format('H:i:s') : '' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

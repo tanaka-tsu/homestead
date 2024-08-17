@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">月初の勤怠打刻</div>
+                <div class="card-header">勤怠打刻</div>
                 <div class="today">{{ Carbon\Carbon::now()->format("Y/m/d") }}</div>
                 <div class="card-body">
                     @if (session('status'))
@@ -16,6 +16,7 @@
 
                     <form action="{{ route('store.kintais', Auth::id()) }}" method='post'>
                         @csrf
+
                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                         @error('user_id')
                             <div class="error">{{ $message }}</div>
@@ -25,7 +26,6 @@
                             <div class="error">{{ $message }}</div>
                         @enderror
                         <div class="stamp-btn"><button type="submit" name="work_start_">出勤</button></div>
-
                     </form>
                 </div>
             </div>

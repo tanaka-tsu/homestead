@@ -14,29 +14,20 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('update.kintais', ['id' => $kintai->id]) }}" method='post'>
+                    <form action="{{ route('update.kintais', $kintai->id) }}" method='post'>
                         @csrf
                         @method('PATCH')
 
-                        <div class="stamp-btn"><button type="submit" name="work_start_">出勤</button></div>
-                    </form>
-                    <form action="{{ route('update.kintais', ['id' => $kintai->id]) }}" method='post'>
-                        @csrf
-                        @method('PATCH')
-
-                        <div class="stamp-btn"><button type="submit" name="break_start_">休憩に出る</button></div>
-                    </form>
-                    <form action="{{ route('update.kintais', ['id' => $kintai->id]) }}" method='post'>
-                        @csrf
-                        @method('PATCH')
-
-                        <div class="stamp-btn"><button type="submit" name="break_end_">休憩から戻る</button></div>
-                    </form>
-                    <form action="{{ route('update.kintais', ['id' => $kintai->id]) }}" method='post'>
-                        @csrf
-                        @method('PATCH')
-
-                        <div class="stamp-btn"><button type="submit" name="work_end_">退勤</button></div>
+                        @if(is_null($workStart))
+                            <div class="stamp-btn"><button type="submit" name="work_start_">出勤</button></div>
+                        @elseif(is_null($workEnd))
+                            <div class="stamp-btn"><button type="submit" name="work_end_">退勤</button></div>
+                        @else
+                            <div class="error">本日のデータは打刻済みです。</div>
+                        @endif
+                        @if (session('error'))
+                            <div class="error">{{ session('error') }}</div>
+                        @endif
                     </form>
                 </div>
             </div>
