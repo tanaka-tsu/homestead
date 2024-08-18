@@ -16,7 +16,7 @@
                         </div>
                     @endif
 
-                    <div class="year-month">{{ \Carbon\Carbon::now()->isoFormat('YYYY/MM') }}</div>
+                    <div class="year-month">{{ $now->isoFormat('YYYY/MM') }}</div>
 
                     <div class="work-schedule">
                         <table border="1" align="center">
@@ -34,8 +34,8 @@
                                     @endphp
                                     <tr align="center">
                                         <td class="vertical-text {{ $isSunday ? 'red-text' : '' }}">{{ $day->isoFormat('MM/DD（ddd）') }}</td>
-                                        <td>{{ isset($workStarts[$day->toDateString()]) ? \Carbon\Carbon::parse($workStarts[$day->toDateString()])->format('H:i:s') : '' }}</td>
-                                        <td>{{ isset($workEnds[$day->toDateString()]) ? \Carbon\Carbon::parse($workEnds[$day->toDateString()])->format('H:i:s') : '' }}</td>
+                                        <td>{{ $workStarts[$day->toDateString()] ?? '' }}</td>
+                                        <td>{{ $workEnds[$day->toDateString()] ?? '' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

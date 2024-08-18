@@ -18,39 +18,35 @@ class KintaiController extends Controller
     public function show($userId) {
         if($userId != Auth::id()) {
             abort(404);
-        } else {
-            $startOfMonth = Carbon::now()->startOfMonth()->toDateString();
-            $endOfMonth = Carbon::now()->endOfMonth()->toDateString();
-            $period = CarbonPeriod::create($startOfMonth, $endOfMonth)->toArray();
-            // 当月の月初から月末までを取得
-
-            $kintais = Auth::user()->kintais;
-            $workStarts = [];
-            $workEnds = [];
-
-            foreach ($period as $day) {
-                $days = $day->isoFormat('DD');
-                $columnName1 = 'work_start_' . $days;
-                $columnName2 = 'work_end_' . $days;
-
-                foreach ($kintais as $kintai) {
-                    $start = isset($kintai->$columnName1) ? $kintai->$columnName1 : null;
-                    $end = isset($kintai->$columnName2) ? $kintai->$columnName2 : null;
-                    $workStarts[$day->toDateString()] = $start;
-                    $workEnds[$day->toDateString()] = $end;
-
-                    if ($start !== null || $end !== null) {
-                        break;
-                    }
-                }
-            }
-
-            return view('kintais.show')->with([
-                'period' => $period,
-                'workStarts' => $workStarts,
-                'workEnds' => $workEnds,
-            ]);
         }
+
+        $now = Carbon::now();
+        $startOfMonth = $now->startOfMonth()->toDateString();
+        $endOfMonth = $now->endOfMonth()->toDateString();
+        $period = CarbonPeriod::create($startOfMonth, $endOfMonth)->toArray();
+        // 当月の月初から月末までを取得
+
+        $month = $now->isoFormat('YYYY-MM');
+        $kintais = Kintai::where('user_id', $userId)
+                          ->where('this_month', 'like', "$month%")
+                          ->get();
+
+        foreach ($period as $day) {
+            $days = $day->isoFormat('DD');
+            $dateString = $day->toDateString();
+            $columnName1 = 'work_start_' . $days;
+            $columnName2 = 'work_end_' . $days;
+
+            foreach ($kintais as $kintai) {
+                $workStarts[$dateString] = isset($kintai->$columnName1) ?
+                Carbon::parse($kintai->$columnName1)->format('H:i:s') : null;
+                $workEnds[$dateString] = isset($kintai->$columnName2) ?
+                Carbon::parse($kintai->$columnName2)->format('H:i:s') : null;
+            }
+        }
+
+        return view('kintais.show',
+            compact('now', 'period', 'workStarts', 'workEnds'));
     }
 
     public function create() {
@@ -81,36 +77,36 @@ class KintaiController extends Controller
     }
 
     public function edit($id) {
+        if($userId != Auth::id()) {
+            abort(404);
+        }
         $userId = Kintai::where('id', $id)->pluck('user_id')->first();
         $kintai = Kintai::findOrfail($id);
         $today = Carbon::now()->format('d');
         $workStart = 'work_start_' . $today;
         $workEnd = 'work_end_' . $today;
 
-        if($userId != Auth::id()) {
-            abort(404);
-        } else {
-            return view('kintais.edit')->with([
-                'kintai' => $kintai,
-                'workStart' => $kintai->$workStart,
-                'workEnd' => $kintai->$workEnd
-            ]);
-        }
+        return view('kintais.edit')->with([
+            'kintai' => $kintai,
+            'workStart' => $kintai->$workStart,
+            'workEnd' => $kintai->$workEnd
+        ]);
     }
 
     public function update(Request $request, $id) {
+        $now = Carbon::now();
         $userId = Auth::id();
         $kintai = Kintai::findOrfail($id);
-        $today = Carbon::now()->format('d');
+        $today = $now->format('d');
         $workStart = 'work_start_' . $today;
         $workEnd = 'work_end_' . $today;
 
         if ($request->has('work_start_') && !$kintai->$workStart) {
-            $kintai->$workStart = Carbon::now();
+            $kintai->$workStart = $now;
             $kintai->save();
             return redirect()->route('show.kintais', $userId);
         } elseif ($request->has('work_end_') && !$kintai->$workEnd) {
-            $kintai->$workEnd = Carbon::now();
+            $kintai->$workEnd = $now;
             $kintai->save();
             return redirect()->route('show.kintais', $userId);
         } else {
