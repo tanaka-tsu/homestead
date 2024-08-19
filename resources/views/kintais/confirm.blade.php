@@ -7,7 +7,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ Auth::user()->fullname }}さんの勤務表</div>
+                <div class="card-header">勤務表の編集</div>
+
+                <div class="error">こちらの内容でよろしければ完了ボタンを押してください。</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -16,12 +18,7 @@
                         </div>
                     @endif
 
-                    <div class="year-month">{{ $now->format('Y/m') }}</div>
-                    @if ($id)
-                        <a href="{{ route('edit.kintais', $id) }}">
-                            編集モード
-                        </a>
-                    @endif
+                    <div class="year-month">{{ $now->isoFormat('YYYY/MM') }}</div>
 
                     <div class="work-schedule">
                         <table border="1" align="center">
@@ -33,22 +30,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($period as $day)
+                                {{-- @foreach ($period as $day)
                                     @php
                                         $isSunday = \Carbon\Carbon::parse($day)->isSunday();
                                     @endphp
                                     <tr align="center">
-                                        <td class="vertical-text {{ $isSunday ? 'red-text' : '' }}">
-                                            {{ $day->isoFormat('MM/DD（ddd）') }}
-                                        </td>
-                                        <td>
-                                            {{ $workStarts[$day->toDateString()] ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $workEnds[$day->toDateString()] ?? '' }}
-                                        </td>
+                                        <td class="vertical-text {{ $isSunday ? 'red-text' : '' }}">{{ $day->isoFormat('MM/DD（ddd）') }}</td>
+                                        <td><a href="#">{{ $workStarts[$day->toDateString()] ?? '' }}</a></td>
+                                        <td><a href="#">{{ $workEnds[$day->toDateString()] ?? '' }}</a></td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
