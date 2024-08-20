@@ -26,8 +26,8 @@ Route::get('/kintais/{id}/stamp', [KintaiController::class,'stamp'])
     ->name('stamp.kintais')
     ->where('id','[0-9]+');
 
-Route::patch('/kintais/{id}/update', [KintaiController::class,'update'])
-    ->name('update.kintais')
+Route::patch('/kintais/{id}/add', [KintaiController::class,'add'])
+    ->name('add.kintais')
     ->where('id','[0-9]+');
 
 Route::get('/kintais/{userId}/show', [KintaiController::class,'show'])
@@ -38,6 +38,6 @@ Route::get('/kintais/{id}/edit', [KintaiController::class,'edit'])
     ->name('edit.kintais')
     ->where('id','[0-9]+');
 
-Route::patch('/kintais/{id}/revision', [KintaiController::class,'revision'])
-    ->name('revision.kintais')
+Route::patch('/kintais/{id}/update', [KintaiController::class,'update'])
+    ->name('update.kintais')
     ->where('id','[0-9]+');

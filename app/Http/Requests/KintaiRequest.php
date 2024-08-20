@@ -32,8 +32,8 @@ class KintaiRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_id.required' => 'user_idは必須です',
-            'this_month.required' => '年/月は必須です',
+            'user_id.required' => 'user_idが確認できません。',
+            'this_month.required' => '年/月が確認できません。',
         ];
     }
 }

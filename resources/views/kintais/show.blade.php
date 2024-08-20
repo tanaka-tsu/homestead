@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ Auth::user()->fullname }}さんの勤務表</div>
+                <div class="card-header">{{ Auth::user()->fullname }}さんの勤怠表</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -27,7 +27,7 @@
                         <table border="1" align="center">
                             <thead>
                                 <tr>
-                                    <th width="20%">日付</th>
+                                    <th width="15%">日付</th>
                                     <th width="20%">出勤</th>
                                     <th width="20%">退勤</th>
                                 </tr>
@@ -35,6 +35,7 @@
                             <tbody>
                                 @foreach ($period as $day)
                                     @php
+                                        // 日曜日は赤文字にする
                                         $isSunday = \Carbon\Carbon::parse($day)->isSunday();
                                     @endphp
                                     <tr align="center">
