@@ -90,9 +90,25 @@
 .year-month{
     text-align: center;
 }
+.edit-btn{
+    margin: 10px 0;
+    text-align: center;
+}
+.edit-btn>button,.edit-btn>a{
+    color: #00608d;
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 15px;
+    background-color: #00ac9a;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+.delete{
+    color: #00608d;
+    font-size: 14px;
+}
 .red-text {
     color: red;
-}
-.blue-text{
-    color: blue;
 }

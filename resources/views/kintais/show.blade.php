@@ -18,9 +18,9 @@
 
                     <div class="year-month">{{ $now->format('Y/m') }}</div>
                     @if ($id)
-                        <a href="{{ route('edit.kintais', $id) }}">
+                        <div class="edit-btn"><a href="{{ route('edit.kintais', $id) }}">
                             編集モード
-                        </a>
+                        </a></div>
                     @endif
 
                     <div class="work-schedule">

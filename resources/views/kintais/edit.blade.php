@@ -40,15 +40,22 @@
                                                 {{ $day->isoFormat('MM/DD（ddd）') }}
                                             </td>
                                             <td>
-                                                <input type="time" name="work_start_{{ $day->format('d') }}" value="{{ isset($workStarts[$day->toDateString()]) ? \Carbon\Carbon::parse($workStarts[$day->toDateString()])->format('H:i') : '' }}">
+                                                <label>
+                                                    <input type="time" name="work_start_{{ $day->format('d') }}" value="{{ isset($workStarts[$day->toDateString()]) ? \Carbon\Carbon::parse($workStarts[$day->toDateString()])->format('H:i') : '' }}">
+                                                    <input type="checkbox" name="delete_start_{{ $day->format('d') }}"><span class="delete">削除</span>
+                                                </label>
                                             </td>
                                             <td>
-                                                <input type="time" name="work_end_{{ $day->format('d') }}" value="{{ isset($workEnds[$day->toDateString()]) ? \Carbon\Carbon::parse($workEnds[$day->toDateString()])->format('H:i') : '' }}">
+                                                <label>
+                                                    <input type="time" name="work_end_{{ $day->format('d') }}" value="{{ isset($workEnds[$day->toDateString()]) ? \Carbon\Carbon::parse($workEnds[$day->toDateString()])->format('H:i') : '' }}">
+                                                    <input type="checkbox" name="delete_end_{{ $day->format('d') }}"><span class="delete">削除</span>
+                                                </label>
+                                            </td>
                                         </tr>
                                     @endforeach
-                                    <button type="submit" class="edit-btn">
-                                        編集する
-                                    </button>
+                                    <div class="edit-btn"><button type="submit">
+                                        編集完了
+                                    </button></div>
                                 </form>
                             </tbody>
                         </table>

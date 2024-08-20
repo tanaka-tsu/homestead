@@ -176,16 +176,28 @@ class KintaiController extends Controller
         $period = $monthly->period;
 
         foreach ($period as $day) {
-            $workStartKey = 'work_start_' . $day->format('d');
-            $workEndKey = 'work_end_' . $day->format('d');
+            $dateString = $day->format('d');
+            $workStartKey = 'work_start_' . $dateString;
+            $workEndKey = 'work_end_' . $dateString;
+            $deleteStartKey = 'delete_start_' . $dateString;
+            $deleteEndKey = 'delete_end_' . $dateString;
 
-            if ($request->has($workStartKey) && $request->input($workStartKey) !== null) {
-                $time = $request->input($workStartKey);
-                $kintai->$workStartKey = $day->toDateString() . ' ' . $time . ':00';
+            if ($request->has($deleteStartKey)) {
+                $kintai->$workStartKey = null;
+            } else {
+                if ($request->has($workStartKey) && $request->input($workStartKey) !== null) {
+                    $time = $request->input($workStartKey);
+                    $kintai->$workStartKey = $day->toDateString() . ' ' . $time . ':00';
+                }
             }
-            if ($request->has($workEndKey) && $request->input($workEndKey) !== null) {
-                $time = $request->input($workEndKey);
-                $kintai->$workEndKey = $day->toDateString() . ' ' . $time . ':00';
+
+            if ($request->has($deleteEndKey)) {
+                $kintai->$workEndKey = null;
+            } else {
+                if ($request->has($workEndKey) && $request->input($workEndKey) !== null) {
+                    $time = $request->input($workEndKey);
+                    $kintai->$workEndKey = $day->toDateString() . ' ' . $time . ':00';
+                }
             }
         }
 
