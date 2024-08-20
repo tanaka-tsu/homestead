@@ -165,14 +165,31 @@ class KintaiController extends Controller
         return view('kintais.edit', compact('id', 'now', 'period', 'workStarts', 'workEnds'));
     }
 
-    public function confirm(Request $request, $id) {
+    public function revision(Request $request, $id) {
         $userId = Auth::id();
+        $data = $this->kintaiForMonth($userId);
+        $kintais = $data->kintais;
         $kintai = Kintai::findOrFail($id);
         $this->getUserIdOrFail($kintai);
 
         $monthly = $this->getMonthly();
-        $now = $monthly->now;
         $period = $monthly->period;
+
+        foreach ($period as $day) {
+            $workStartKey = 'work_start_' . $day->format('d');
+            $workEndKey = 'work_end_' . $day->format('d');
+
+            if ($request->has($workStartKey) && $request->input($workStartKey) !== null) {
+                $time = $request->input($workStartKey);
+                $kintai->$workStartKey = $day->toDateString() . ' ' . $time . ':00';
+            }
+            if ($request->has($workEndKey) && $request->input($workEndKey) !== null) {
+                $time = $request->input($workEndKey);
+                $kintai->$workEndKey = $day->toDateString() . ' ' . $time . ':00';
+            }
+        }
+
+        $kintai->save();
 
         return redirect()->route('show.kintais', $userId);
     }

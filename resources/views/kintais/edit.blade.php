@@ -27,7 +27,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <form action="{{ route('confirm.kintais', $id) }}" method='post'>
+                                <form action="{{ route('revision.kintais', $id) }}" method='post'>
                                     @csrf
                                     @method('PATCH')
 
@@ -40,13 +40,10 @@
                                                 {{ $day->isoFormat('MM/DD（ddd）') }}
                                             </td>
                                             <td>
-                                                {{ $workStarts[$day->toDateString()] ?? '' }}
-                                                <input type="time" name="work_start_">
+                                                <input type="time" name="work_start_{{ $day->format('d') }}" value="{{ isset($workStarts[$day->toDateString()]) ? \Carbon\Carbon::parse($workStarts[$day->toDateString()])->format('H:i') : '' }}">
                                             </td>
                                             <td>
-                                                {{ $workEnds[$day->toDateString()] ?? '' }}
-                                                <input type="time" name="work_end_">
-                                            </td>
+                                                <input type="time" name="work_end_{{ $day->format('d') }}" value="{{ isset($workEnds[$day->toDateString()]) ? \Carbon\Carbon::parse($workEnds[$day->toDateString()])->format('H:i') : '' }}">
                                         </tr>
                                     @endforeach
                                     <button type="submit" class="edit-btn">

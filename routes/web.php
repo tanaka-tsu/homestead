@@ -35,10 +35,9 @@ Route::get('/kintais/{userId}/show', [KintaiController::class,'show'])
     ->where('userId','[0-9]+');
 
 Route::get('/kintais/{id}/edit', [KintaiController::class,'edit'])
-        ->name('edit.kintais')
-        ->where('id','[0-9]+');
-
-Route::patch('/kintais/{id}/confirm', [KintaiController::class,'confirm'])
-    ->name('confirm.kintais')
+    ->name('edit.kintais')
     ->where('id','[0-9]+');
 
+Route::patch('/kintais/{id}/revision', [KintaiController::class,'revision'])
+    ->name('revision.kintais')
+    ->where('id','[0-9]+');
