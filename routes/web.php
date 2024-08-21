@@ -18,10 +18,25 @@ use App\Http\Controllers\UserController;
 Auth::routes();
 
 // マイページルート
-Route::get('/users/{userId}', [UserController::class,'index'])
-    ->name('index.users')
-    ->where('userId','[0-9]+');
+Route::get('/user/{id}', [UserController::class,'index'])
+    ->name('index.user')
+    ->where('id','[0-9]+');
 
+Route::get('/user/{id}/edit', [UserController::class,'edit'])
+    ->name('edit.user')
+    ->where('id','[0-9]+');
+
+Route::patch('/user/{id}/update', [UserController::class,'update'])
+    ->name('update.user')
+    ->where('id','[0-9]+');
+
+Route::get('/user/{id}/change', [UserController::class,'passwordForm'])
+    ->name('passwordForm.user')
+    ->where('id','[0-9]+');
+
+Route::patch('/user/{id}/change', [UserController::class,'changePassword'])
+    ->name('changePassword.user')
+    ->where('id','[0-9]+');
 
 // 勤怠登録ルート
 Route::get('/', [KintaiController::class,'create'])

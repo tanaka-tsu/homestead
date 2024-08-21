@@ -27,15 +27,15 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="branch_office" class="col-md-4 col-form-label text-md-end">所属支社</label>
+                            <label for="branch_office" class="col-md-4 col-form-label text-md-end">所属</label>
 
                             <div class="col-md-6">
                                 <select id="branch_office" class="form-control @error('branch_office') is-invalid @enderror" name="branch_office" required autocomplete="branch_office" autofocus>
                                     <option value="" hidden>選択してください</option>
-                                    <option value="osaka" {{ old('branch_office') == 'osaka' ? 'selected' : '' }}>大阪支社</option>
-                                    <option value="tokyo" {{ old('branch_office') == 'tokyo' ? 'selected' : '' }}>東京支社</option>
-                                    <option value="nagoya" {{ old('branch_office') == 'nagoya' ? 'selected' : '' }}>名古屋支社</option>
-                                    <option value="fukuoka" {{ old('branch_office') == 'fukuoka' ? 'selected' : '' }}>福岡支社</option>
+                                    <option value="大阪本社" {{ old('branch_office') == '大阪本社' ? 'selected' : '' }}>大阪本社</option>
+                                    <option value="東京支社" {{ old('branch_office') == '東京支社' ? 'selected' : '' }}>東京支社</option>
+                                    <option value="名古屋支社" {{ old('branch_office') == '名古屋支社' ? 'selected' : '' }}>名古屋支社</option>
+                                    <option value="福岡支社" {{ old('branch_office') == '福岡支社' ? 'selected' : '' }}>福岡支社</option>
                                 </select>
 
                                 @error('branch_office')
@@ -53,9 +53,9 @@
                             <div class="col-md-6">
                                 <select id="terms" class="form-control @error('terms') is-invalid @enderror" name="terms" required autocomplete="terms" autofocus>
                                     <option value="" hidden>選択してください</option>
-                                    <option value="1" {{ old('terms') == '1' ? 'selected' : '' }}>区分1</option>
-                                    <option value="2" {{ old('terms') == '2' ? 'selected' : '' }}>区分2</option>
-                                    <option value="3" {{ old('terms') == '3' ? 'selected' : '' }}>区分3</option>
+                                    <option value="区分1" {{ old('terms') == '区分1' ? 'selected' : '' }}>区分1</option>
+                                    <option value="区分2" {{ old('terms') == '区分2' ? 'selected' : '' }}>区分2</option>
+                                    <option value="区分3" {{ old('terms') == '区分3' ? 'selected' : '' }}>区分3</option>
                                 </select>
 
                                 @error('terms')

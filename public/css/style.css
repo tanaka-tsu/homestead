@@ -86,7 +86,7 @@
 }
 
 /*
-マイページ
+勤怠表
 */
 .year-month{
     text-align: center;
@@ -112,4 +112,17 @@
 }
 .red-text {
     color: red;
+}
+
+/*
+マイページ
+*/
+.mypage-edit{
+    margin-top: 20px;
+}
+.employee-info{
+    margin-top: 15px;
+}
+.user-edit{
+    text-align: center;
 }
