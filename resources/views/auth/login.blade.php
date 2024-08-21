@@ -12,12 +12,12 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">ユーザーID</label>
+                            <label for="employee_number" class="col-md-4 col-form-label text-md-end">社員番号</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="employee_number" type="text" class="form-control @error('employee_number') is-invalid @enderror" name="employee_number" value="{{ old('employee_number') }}" required autocomplete="employee_number" autofocus>
 
-                                @error('name')
+                                @error('employee_number')
                                     <br>
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

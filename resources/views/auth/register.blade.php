@@ -12,12 +12,12 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">ユーザーID</label>
+                            <label for="employee_number" class="col-md-4 col-form-label text-md-end">社員番号</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="employee_number" type="text" class="form-control @error('employee_number') is-invalid @enderror" name="employee_number" value="{{ old('employee_number') }}" required autocomplete="employee_number" autofocus>
 
-                                @error('name')
+                                @error('employee_number')
                                     <br>
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -25,13 +25,55 @@
                                 @enderror
                             </div>
                         </div>
+
                         <div class="row mb-3">
-                            <label for="fullname" class="col-md-4 col-form-label text-md-end">氏名</label>
+                            <label for="branch_office" class="col-md-4 col-form-label text-md-end">所属支社</label>
 
                             <div class="col-md-6">
-                                <input id="fullname" type="text" class="form-control @error('fullname') is-invalid @enderror" name="fullname" value="{{ old('fullname') }}" required autocomplete="fullname" autofocus>
+                                <select id="branch_office" class="form-control @error('branch_office') is-invalid @enderror" name="branch_office" required autocomplete="branch_office" autofocus>
+                                    <option value="" hidden>選択してください</option>
+                                    <option value="osaka" {{ old('branch_office') == 'osaka' ? 'selected' : '' }}>大阪支社</option>
+                                    <option value="tokyo" {{ old('branch_office') == 'tokyo' ? 'selected' : '' }}>東京支社</option>
+                                    <option value="nagoya" {{ old('branch_office') == 'nagoya' ? 'selected' : '' }}>名古屋支社</option>
+                                    <option value="fukuoka" {{ old('branch_office') == 'fukuoka' ? 'selected' : '' }}>福岡支社</option>
+                                </select>
 
-                                @error('fullname')
+                                @error('branch_office')
+                                    <br>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="terms" class="col-md-4 col-form-label text-md-end">区分</label>
+
+                            <div class="col-md-6">
+                                <select id="terms" class="form-control @error('terms') is-invalid @enderror" name="terms" required autocomplete="terms" autofocus>
+                                    <option value="" hidden>選択してください</option>
+                                    <option value="1" {{ old('terms') == '1' ? 'selected' : '' }}>区分1</option>
+                                    <option value="2" {{ old('terms') == '2' ? 'selected' : '' }}>区分2</option>
+                                    <option value="3" {{ old('terms') == '3' ? 'selected' : '' }}>区分3</option>
+                                </select>
+
+                                @error('terms')
+                                    <br>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="name" class="col-md-4 col-form-label text-md-end">氏名</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                                @error('name')
                                     <br>
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -71,7 +113,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">パスワード（確認のため再度入力してください）</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">パスワード（確認用）</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KintaiController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,13 @@ use App\Http\Controllers\KintaiController;
 
 Auth::routes();
 
+// マイページルート
+Route::get('/users/{userId}', [UserController::class,'index'])
+    ->name('index.users')
+    ->where('userId','[0-9]+');
+
+
+// 勤怠登録ルート
 Route::get('/', [KintaiController::class,'create'])
     ->name('create.kintais');
 
