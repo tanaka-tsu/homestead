@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KintaiController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +20,29 @@ use App\Http\Controllers\UserController;
 
 Auth::routes();
 
-// マイページルート
+// 管理者ログイン・新規登録
+Route::get('/admin/login', [LoginController::class, 'showAdminLoginForm'])
+    ->name('login.admin');
+
+Route::post('/admin/login', [LoginController::class, 'adminLogin'])
+    ->name('loggedIn.admin');
+
+Route::group(['middleware' => ['auth:admin']], function () {
+    Route::get('/admin/register', [RegisterController::class, 'showAdminRegisterForm']);
+
+    Route::post('/admin/register', [RegisterController::class, 'registerAdmin'])
+        ->name('register.admin');
+
+    Route::post('/admin/logout', [LoginController::class, 'logout'])
+        ->name('logout.admin');
+
+    // 管理者マイページ
+    Route::get('/admin', [AdminController::class, 'index'])
+        ->name('index.admin');
+});
+
+
+// マイページ
 Route::get('/user/{id}', [UserController::class,'index'])
     ->name('index.user')
     ->where('id','[0-9]+');
@@ -38,7 +63,8 @@ Route::patch('/user/{id}/change', [UserController::class,'changePassword'])
     ->name('changePassword.user')
     ->where('id','[0-9]+');
 
-// 勤怠登録ルート
+
+// 勤怠登録
 Route::get('/', [KintaiController::class,'create'])
     ->name('create.kintais');
 

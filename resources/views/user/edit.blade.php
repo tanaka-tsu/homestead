@@ -76,20 +76,6 @@
                                 @error('email')
                                     <div class="error">{{ $message }}</div>
                                 @enderror
-                                {{-- <div class="user-edit"><label>
-                                    <tr>
-                                        <th>パスワード</th>
-                                        <td><input type="text" name="password"></td>
-                                    </tr>
-                                </label></div>
-                                @error('password')
-                                    <div class="error">{{ $message }}</div>
-                                @enderror
-                                @if(session('warning'))
-                                    <div class="alert alert-danger">
-                                        {{ session('warning') }}
-                                    </div>
-                                @endif --}}
                             </table>
                         </form>
                     </div>
