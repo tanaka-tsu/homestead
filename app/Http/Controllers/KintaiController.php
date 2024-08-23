@@ -180,7 +180,7 @@ class KintaiController extends Controller
             }
         }
 
-        return view('kintais.edit', compact('id', 'now', 'period', 'workStarts', 'workEnds'));
+        return view('kintais.edit', compact('id', 'userId', 'now', 'period', 'workStarts', 'workEnds'));
     }
 
     public function update(Request $request, $id) {

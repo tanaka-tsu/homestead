@@ -28,23 +28,44 @@ Route::post('/admin/login', [LoginController::class, 'adminLogin'])
     ->name('loggedIn.admin');
 
 Route::group(['middleware' => ['auth:admin']], function () {
-    Route::get('/admin/register', [RegisterController::class, 'showAdminRegisterForm']);
 
-    Route::post('/admin/register', [RegisterController::class, 'registerAdmin'])
+    Route::get('/admin/register', [RegisterController::class, 'showAdminRegisterForm'])
         ->name('register.admin');
+
+    Route::post('/admin/register', [RegisterController::class, 'registerAdmin']);
 
     Route::post('/admin/logout', [LoginController::class, 'logout'])
         ->name('logout.admin');
 
-    // 管理者マイページ
+    // 管理者用ページ
     Route::get('/admin', [AdminController::class, 'index'])
         ->name('index.admin');
+
+    Route::get('/admin/{id}', [AdminController::class,'show'])
+        ->name('show.admin')
+        ->where('id','[0-9]+');
+
+    Route::get('/admin/{id}/edit', [AdminController::class,'edit'])
+        ->name('edit.admin')
+        ->where('id','[0-9]+');
+
+    Route::patch('/admin/{id}/update', [AdminController::class,'update'])
+        ->name('update.admin')
+        ->where('id','[0-9]+');
+
+    Route::get('/admin/{id}/change', [AdminController::class,'passwordForm'])
+        ->name('passwordForm.admin')
+        ->where('id','[0-9]+');
+
+    Route::patch('/admin/{id}/change', [AdminController::class,'changePassword'])
+        ->name('changePassword.admin')
+        ->where('id','[0-9]+');
 });
 
 
 // マイページ
-Route::get('/user/{id}', [UserController::class,'index'])
-    ->name('index.user')
+Route::get('/user/{id}', [UserController::class,'show'])
+    ->name('show.user')
     ->where('id','[0-9]+');
 
 Route::get('/user/{id}/edit', [UserController::class,'edit'])

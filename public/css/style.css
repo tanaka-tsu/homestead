@@ -51,6 +51,27 @@
     /* コンテンツタイトル */
     font-weight: bold;
 }
+.change-success{
+    margin: 20px 0;
+    color: #00608d;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+.back{
+    height: 10px;
+}
+.back-btn{
+    color: black;
+    font-weight: bold;
+    margin-left: 10px;
+    padding: 5px 15px;
+    text-decoration: none;
+    background-color: #00ac9a;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
 
 /*
 新規登録・ログインフォーム
@@ -124,5 +145,19 @@
     margin-top: 15px;
 }
 .user-edit{
+    text-align: center;
+}
+
+
+/*
+管理者ページ
+*/
+.adminis{
+    margin-top: 40px;
+    font-weight: bold;
+    text-align: center;
+}
+.administrators-list{
+    list-style: none;
     text-align: center;
 }

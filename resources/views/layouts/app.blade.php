@@ -63,19 +63,19 @@
                                     </a>
                                 </li>
                             @endif
-                        @elseif($authGroup === 'user')
+                        @elseif(Auth::check() && $authGroup === 'user')
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="{{ route('create.kintais') }}">
+                                <a class="nav-link" href="{{ route('create.kintais') }}">
                                     打刻
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="{{ route('show.kintais', Auth::id()) }}">
+                                <a class="nav-link" href="{{ route('show.kintais', Auth::id()) }}">
                                     勤怠表
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="{{ route('index.user', Auth::id()) }}">
+                                <a class="nav-link" href="{{ route('show.user', Auth::id()) }}">
                                     マイページ
                                 </a>
                             </li>
@@ -93,10 +93,16 @@
                                 </div>
                             </li>
 
-                        @elseif($authGroup === 'admin')
+                        @elseif(Auth::check() && $authGroup === 'admin')
                             <li>
-                                <a class="nav-link dropdown-toggle" href="{{ route('index.admin') }}">
-                                    Admin
+                                <a class="nav-link" href="{{ route('index.admin') }}">
+                                    社員一覧
+                                </a>
+                                <a class="nav-link" href="{{ route('show.admin', ['id' => Auth::guard('admin')->user()->id]) }}">
+                                    管理者情報
+                                </a>
+                                <a class="nav-link" href="{{ route('register.admin') }}">
+                                    管理者追加
                                 </a>
                             </li>
                             <li>
