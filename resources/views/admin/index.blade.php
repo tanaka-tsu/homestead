@@ -16,7 +16,7 @@
                 <tr>
                     <td align="center">{{ $user->employee_number }}</td>
                     <td align="center">{{ $user->branch_office }}</td>
-                    <td align="center"><a href="{{ route('show.user', $user->id) }}">{{ $user->name }}</a></td>
+                    <td align="center"><a href="{{ route('show.kintais', ['userId' => $user->id]) }}">{{ $user->name }}</a></td>
                     <td align="center">{{ $user->terms }}</td>
                 </tr>
             @endforeach

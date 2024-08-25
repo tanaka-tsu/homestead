@@ -43,26 +43,31 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
-                        @if(!Auth::check() && (!isset($authgroup) || !Auth::guard($authgroup)->check()))
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">
-                                        新規登録
+                        @if(Auth::guard('admin')->check())
+                            <li>
+                                <a class="nav-link" href="{{ route('index.admin') }}">
+                                    社員一覧
+                                </a>
+                                <a class="nav-link" href="{{ route('show.admin', ['id' => Auth::guard('admin')->user()->id]) }}">
+                                    管理者情報
+                                </a>
+                                <a class="nav-link" href="{{ route('register.admin') }}">
+                                    管理者追加
+                                </a>
+                            </li>
+                            <li>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                                    Logout
                                     </a>
-                                </li>
-                            @endif
-                            @if (Route::has('login'))
-                                <li>
-                                    <a class="nav-link" href="{{ route('login') }}">
-                                        ログイン
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login.admin') }}">
-                                        ＊
-                                    </a>
-                                </li>
-                            @endif
+
+                                    <form id="logout-form" action="{{ route('logout.admin') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
                         @elseif(Auth::check() && $authGroup === 'user')
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="{{ route('create.kintais') }}">
@@ -92,32 +97,26 @@
                                     </form>
                                 </div>
                             </li>
-
-                        @elseif(Auth::check() && $authGroup === 'admin')
-                            <li>
-                                <a class="nav-link" href="{{ route('index.admin') }}">
-                                    社員一覧
-                                </a>
-                                <a class="nav-link" href="{{ route('show.admin', ['id' => Auth::guard('admin')->user()->id]) }}">
-                                    管理者情報
-                                </a>
-                                <a class="nav-link" href="{{ route('register.admin') }}">
-                                    管理者追加
-                                </a>
-                            </li>
-                            <li>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                    Logout
+                        @elseif(!Auth::check())
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">
+                                        新規登録
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('logout.admin') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                </li>
+                            @endif
+                            @if (Route::has('login'))
+                                <li>
+                                    <a class="nav-link" href="{{ route('login') }}">
+                                        ログイン
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login.admin') }}">
+                                        ＊
+                                    </a>
+                                </li>
+                            @endif
                         @endif
                     </ul>
                 </div>

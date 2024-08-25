@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Kintai;
 use App\Http\Requests\KintaiRequest;
+use App\Models\Kintai;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 
 class KintaiController extends Controller
 {
     public function __construct() {
-       $this->middleware('auth');
+       $this->middleware('auth')->except('show');
     }
 
     private function getUserIdOrFail($kintai) {
@@ -51,34 +52,39 @@ class KintaiController extends Controller
     }
 
     public function show($userId) {
-        if ($userId != Auth::id()) { abort(404); }
+        if ($userId == Auth::id() || Auth::guard('admin')->check()) {
 
-        // 必要なデータをそろえて表の準備
-        $data = $this->kintaiForMonth($userId);
-        $kintais = $data->kintais;
-        $id = $data->id;
-        $monthly = $this->getMonthly();
-        $now = $monthly->now;
-        $period = $monthly->period;
-        $workStarts = [];
-        $workEnds = [];
+            // 必要なデータをそろえて表の準備
+            $user = User::findOrFail($userId);
+            $data = $this->kintaiForMonth($userId);
+            $kintais = $data->kintais;
+            $id = $data->id;
+            $monthly = $this->getMonthly();
+            $now = $monthly->now;
+            $period = $monthly->period;
+            $workStarts = [];
+            $workEnds = [];
 
-        foreach ($period as $day) {
-            // カラム名を合わせる
-            $dateString = $day->toDateString();
-            $columnName1 = 'work_start_' . $day->format('d');
-            $columnName2 = 'work_end_' . $day->format('d');
+            foreach ($period as $day) {
+                // カラム名を合わせる
+                $dateString = $day->toDateString();
+                $columnName1 = 'work_start_' . $day->format('d');
+                $columnName2 = 'work_end_' . $day->format('d');
 
-            foreach ($kintais as $kintai) {
-                // カラムにデータがあれば時間形式で表示、なければnullを返す
-                $workStarts[$dateString] = isset($kintai->$columnName1) ?
-                Carbon::parse($kintai->$columnName1)->format('H:i') : null;
-                $workEnds[$dateString] = isset($kintai->$columnName2) ?
-                Carbon::parse($kintai->$columnName2)->format('H:i') : null;
+                foreach ($kintais as $kintai) {
+                    // カラムにデータがあれば時間形式で表示、なければnullを返す
+                    $workStarts[$dateString] = isset($kintai->$columnName1) ?
+                    Carbon::parse($kintai->$columnName1)->format('H:i') : null;
+                    $workEnds[$dateString] = isset($kintai->$columnName2) ?
+                    Carbon::parse($kintai->$columnName2)->format('H:i') : null;
+                }
             }
-        }
 
-        return view('kintais.show', compact('id', 'now', 'period', 'workStarts', 'workEnds'));
+            return view('kintais.show', compact('id', 'user', 'now', 'period', 'workStarts', 'workEnds'));
+
+        } else {
+            abort(404);
+        }
     }
 
     public function create() {
