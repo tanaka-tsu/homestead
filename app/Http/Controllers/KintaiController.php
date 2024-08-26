@@ -21,26 +21,21 @@ class KintaiController extends Controller
         if ($kintai->user_id != Auth::id()) { abort(404); }
     }
 
-    private function kintaiForMonth($userId) {
-        // this_monthと現在の月が一致しているレコードのidを取得
-        $now = Carbon::now();
-        $month = $now->format('Y-m');
+    private function kintaiForMonth($userId, $month) {
         $kintais = Kintai::where('user_id', $userId)
                           ->where('this_month', 'like', "$month%")
                           ->get();
         $id = $kintais->pluck('id')->first();
 
         return (object) [
-            'now' => $now,
             'kintais' => $kintais,
             'id' => $id
         ];
     }
 
-    private function getMonthly() {
-        // 現在の月の月初から月末までを取得し配列に変換
+    private function getMonthly($selectedMonth) {
         $period = [];
-        $now = Carbon::now();
+        $now = Carbon::parse($selectedMonth);
         $startOfMonth = $now->startOfMonth()->toDateString();
         $endOfMonth = $now->endOfMonth()->toDateString();
         $period = CarbonPeriod::create($startOfMonth, $endOfMonth)->toArray();
@@ -51,28 +46,34 @@ class KintaiController extends Controller
         ];
     }
 
+    private function getPastKintais($userId) {
+        return Kintai::where('user_id', $userId)
+                    ->orderBy('this_month', 'desc')
+                    ->pluck('this_month');
+    }
+
     public function show($userId) {
         if ($userId == Auth::id() || Auth::guard('admin')->check()) {
-
-            // 必要なデータをそろえて表の準備
             $user = User::findOrFail($userId);
-            $data = $this->kintaiForMonth($userId);
+            $currentMonth = Carbon::now()->format('Y-m');
+            $selectedMonth = request('this_month', $currentMonth);
+            $selectedMonthFormat = Carbon::parse($selectedMonth)->format('Y-m');
+            $data = $this->kintaiForMonth($userId, $selectedMonth);
             $kintais = $data->kintais;
             $id = $data->id;
-            $monthly = $this->getMonthly();
-            $now = $monthly->now;
+            $monthly = $this->getMonthly($selectedMonth);
+            $now = Carbon::parse($selectedMonth);
             $period = $monthly->period;
             $workStarts = [];
             $workEnds = [];
+            $pastKintais = $this->getPastKintais($userId);
 
             foreach ($period as $day) {
-                // カラム名を合わせる
                 $dateString = $day->toDateString();
                 $columnName1 = 'work_start_' . $day->format('d');
                 $columnName2 = 'work_end_' . $day->format('d');
 
                 foreach ($kintais as $kintai) {
-                    // カラムにデータがあれば時間形式で表示、なければnullを返す
                     $workStarts[$dateString] = isset($kintai->$columnName1) ?
                     Carbon::parse($kintai->$columnName1)->format('H:i') : null;
                     $workEnds[$dateString] = isset($kintai->$columnName2) ?
@@ -80,8 +81,7 @@ class KintaiController extends Controller
                 }
             }
 
-            return view('kintais.show', compact('id', 'user', 'now', 'period', 'workStarts', 'workEnds'));
-
+            return view('kintais.show', compact('id', 'user', 'now', 'period', 'workStarts', 'workEnds', 'pastKintais', 'currentMonth', 'selectedMonth', 'selectedMonthFormat'));
         } else {
             abort(404);
         }
@@ -89,10 +89,10 @@ class KintaiController extends Controller
 
     public function create() {
         $userId = Auth::id();
-        $data = $this->kintaiForMonth($userId);
+        $month = Carbon::now()->format('Y-m');
+        $data = $this->kintaiForMonth($userId, $month);
         $kintais = $data->kintais;
         $id = $data->id;
-        $now = $data->now;
 
         // 現在の月のレコードがなければ作成画面、あれば更新画面を返す
         if ($kintais->isEmpty()) {
@@ -161,11 +161,12 @@ class KintaiController extends Controller
     public function edit($id) {
         // 必要なデータをそろえて表の準備
         $userId = Auth::id();
-        $data = $this->kintaiForMonth($userId);
+        $selectedMonth = request('this_month', Carbon::now()->format('Y-m'));
+        $data = $this->kintaiForMonth($userId, $selectedMonth);
         $kintais = $data->kintais;
         $kintai = Kintai::findOrFail($id);
         $this->getUserIdOrFail($kintai);
-        $monthly = $this->getMonthly();
+        $monthly = $this->getMonthly($selectedMonth);
         $now = $monthly->now;
         $period = $monthly->period;
         $workStarts = [];
@@ -192,7 +193,8 @@ class KintaiController extends Controller
     public function update(Request $request, $id) {
         // 必要なデータをそろえて表の準備
         $kintai = Kintai::findOrFail($id);
-        $monthly = $this->getMonthly();
+        $selectedMonth = request('this_month', Carbon::now()->format('Y-m'));
+        $monthly = $this->getMonthly($selectedMonth);
         $period = $monthly->period;
 
         foreach ($period as $day) {

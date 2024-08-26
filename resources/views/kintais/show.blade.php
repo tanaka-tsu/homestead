@@ -25,9 +25,18 @@
                 </table>
             </div>
         @endif
-
-        <div class="year-month">{{ $now->format('Y/m') }}</div>
-        @if ($id && $user->id == Auth::id())
+        <form method="GET" action="{{ route('show.kintais', ['userId' => $user->id]) }}">
+            <div class="seledted-month">
+                <select name="this_month" onchange="this.form.submit()">
+                    @foreach ($pastKintais as $month)
+                    <option value="{{ $month }}" {{ $selectedMonth == $month ? 'selected' : '' }}>
+                            {{ \Carbon\Carbon::parse($month)->format('Y/m') }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </form>
+        @if ($selectedMonthFormat == $currentMonth && $user->id == Auth::id())
             <div class="edit-btn"><a href="{{ route('edit.kintais', $id) }}">
                 編集モード
             </a></div>
