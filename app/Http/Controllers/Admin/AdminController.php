@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Pagination\Paginator;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\User;
@@ -21,7 +22,7 @@ class AdminController extends Controller
     }
 
     public function index() {
-        $users = User::latest()->get();
+        $users = User::latest()->paginate(5);
         $admins = Admin::latest()->get();
         return view('admin.index', compact('users', 'admins'));
     }
@@ -43,9 +44,9 @@ class AdminController extends Controller
             'email' => 'required',
             'admin_id' => 'required',
         ],[
-            'name.required' => '名前が入力されていません',
-            'email.required' => 'メールアドレスが入力されていません',
-            'admin_id.required' => '管理者IDが入力されていません',
+            'name.required' => '名前が入力されていません。',
+            'email.required' => 'メールアドレスが入力されていません。',
+            'admin_id.required' => '管理者IDが入力されていません。',
         ]);
 
         $admin->update($request->only(['name', 'email', 'admin_id']));
@@ -63,13 +64,13 @@ class AdminController extends Controller
         if (!Hash::check($request->get('current-password'), $admin->password)) {
             return redirect()->route('passwordForm.admin', $id)
                 ->withInput()
-                ->withErrors(['current-password' => '現在のパスワードと一致しません']);
+                ->withErrors(['current-password' => '現在のパスワードと一致しません。']);
         }
 
         if ($request->get('current-password') === $request->get('new-password')) {
             return redirect()->route('passwordForm.admin', $id)
                 ->withInput()
-                ->withErrors(['new-password' => '同じパスワードは登録できません']);
+                ->withErrors(['new-password' => '同じパスワードは登録できません。']);
         }
 
         $request->validate([
@@ -79,6 +80,6 @@ class AdminController extends Controller
 
         $admin->update(['password' => Hash::make($request->get('new-password'))]);
         return redirect()->route('show.admin', $id)
-            ->with('flash_message', 'パスワードを変更しました');
+            ->with('flash_message', 'パスワードを変更しました。');
     }
 }

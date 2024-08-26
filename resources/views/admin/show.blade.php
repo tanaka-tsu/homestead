@@ -13,7 +13,7 @@
         <div class="employee-info">
             <table border="1" align="center">
                 <tr>
-                    <th>名前</th>
+                    <th width="30%">名前</th>
                     <td align="center">{{ $admin->name }}</td>
                 </tr>
                 <tr>

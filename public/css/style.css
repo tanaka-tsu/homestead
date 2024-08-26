@@ -12,7 +12,6 @@
     font-size: 18px;
     font-weight: bold;
     color: azure;
-    text-decoration: none;
 }
 .collapse{
     /* リンク全体 */
@@ -33,7 +32,6 @@
 .nav-link,.dropdown-item{
     /* リンクの文字とか */
     margin-left: 15px;
-    text-decoration: none;
     color: azure;
 }
 
@@ -42,15 +40,20 @@
 */
 .container{
 }
+/* コンテンツタイトル */
+.card-header{
+    font-weight: bold;
+}
+/* エラー */
 .error{
     margin: 20px 0;
     color: red;
     text-align: center;
 }
-.card-header{
-    /* コンテンツタイトル */
-    font-weight: bold;
+.invalid-feedback{
+    color: red;
 }
+/* パスワード変更 */
 .change-success{
     margin: 20px 0;
     color: #00608d;
@@ -58,19 +61,52 @@
     font-size: 14px;
     text-align: center;
 }
+/* 戻るボタン */
 .back{
     height: 10px;
 }
 .back-btn{
-    color: black;
-    font-weight: bold;
+    color: white;
     margin-left: 10px;
     padding: 5px 15px;
-    text-decoration: none;
     background-color: #00ac9a;
     border: none;
     border-radius: 15px;
     cursor: pointer;
+}
+/* ページネーション */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+}
+.pagination li {
+    display: inline;
+}
+.pagination li a {
+    color: #00ac9a;
+    padding: 6px 12px;
+    border: 1px solid #dee2e6;
+    margin-left: -1px;
+}
+.pagination li a:hover {
+    background-color: #e9ecef;
+}
+.pagination .active span {
+    background-color: #00ac9a;
+    color: white;
+    border-color: #00ac9a;
+    padding: 6px 12px;
+}
+/* リンク */
+a{
+    text-decoration: none;
+    color: #00885a;
+}
+/* テーブル */
+table, td, th{
+    border-color: #dee2e6;
 }
 
 /*
@@ -82,7 +118,6 @@
 }
 .form-check-label,.btn-link{
     font-size: 14px;
-    text-decoration: none;
 }
 
 /*
@@ -109,22 +144,26 @@
 /*
 勤怠表
 */
+.seledted-month{
+    text-align: center;
+    margin: 15px 0;
+}
 .year-month{
     text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
 }
 .edit-btn{
     margin: 10px 0;
     text-align: center;
 }
 .edit-btn>button,.edit-btn>a{
-    color: #00608d;
+    color: white;
     font-size: 16px;
-    text-decoration: none;
-    font-weight: bold;
     padding: 5px 15px;
     background-color: #00ac9a;
     border: none;
-    border-radius: 15px;
+    border-radius: 10px;
     cursor: pointer;
 }
 .delete{

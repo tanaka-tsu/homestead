@@ -14,18 +14,18 @@
             <table border="1" align="center">
                 <tr>
                     <th width="30%">社員番号</th>
-                    <td align="center">{{ $user->employee_number }}</td>
+                    <td align="center">{{ $user->employee_id }}</td>
                 </tr>
                 <tr>
                     <th>所属</th>
-                    <td align="center">{{ $user->branch_office }}</td>
+                    <td align="center">{{ $user->office }}</td>
                 </tr>
                 <tr>
                     <th>名前</th>
                     <td align="center">{{ $user->name }}</td>
                 </tr>
                 <tr>
-                    <th>区分</th>
+                    <th>勤務時間</th>
                     <td align="center">{{ $user->terms }}</td>
                 </tr>
                 <tr>

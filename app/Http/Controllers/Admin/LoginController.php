@@ -50,7 +50,7 @@ class LoginController extends Controller
             'password.required' => 'パスワードは必須です。',
         ]);
 
-        // hasTooManyLoginAttempts メソッドが存在し、かつログイン試行回数が多すぎる場合、ロックアウトイベントを発生させます。
+        // hasTooManyLoginAttempts メソッドが存在し、かつログイン試行回数が多すぎる場合、ロックアウトイベントを発生させます
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);

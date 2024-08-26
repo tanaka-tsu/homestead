@@ -52,7 +52,7 @@
                                     管理者情報
                                 </a>
                                 <a class="nav-link" href="{{ route('register.admin') }}">
-                                    管理者追加
+                                    管理者登録
                                 </a>
                             </li>
                             <li>

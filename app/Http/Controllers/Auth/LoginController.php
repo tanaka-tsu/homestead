@@ -43,6 +43,6 @@ class LoginController extends Controller
 
     public function username()
     {
-      return 'employee_number';
+      return 'employee_id';
     }
 }
