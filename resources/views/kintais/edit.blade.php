@@ -13,8 +13,8 @@
                 <thead>
                     <tr>
                         <th width="15%">日付</th>
-                        <th width="20%">出勤</th>
-                        <th width="20%">退勤</th>
+                        <th width="20%">出勤時刻</th>
+                        <th width="20%">退勤時刻</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,22 +23,19 @@
                         @method('PATCH')
 
                         @foreach ($period as $day)
-                            @php
-                                $isSunday = \Carbon\Carbon::parse($day)->isSunday();
-                            @endphp
                             <tr align="center">
-                                <td class="vertical-text {{ $isSunday ? 'red-text' : '' }}">
+                                <td class="vertical-text {{ \Carbon\Carbon::parse($day)->isSunday() ? 'red-text' : '' }}">
                                     {{ $day->isoFormat('MM/DD（ddd）') }}
                                 </td>
                                 <td>
                                     <label>
-                                        <input type="time" name="work_start_{{ $day->format('d') }}" value="{{ isset($workStarts[$day->toDateString()]) ? \Carbon\Carbon::parse($workStarts[$day->toDateString()])->format('H:i') : '' }}">
+                                        <input type="time" name="work_start_{{ $day->format('d') }}" value="{{ $workStarts[$day->toDateString()] ?? '' }}">
                                         <input type="checkbox" name="delete_start_{{ $day->format('d') }}"><span class="delete">削除</span>
                                     </label>
                                 </td>
                                 <td>
                                     <label>
-                                        <input type="time" name="work_end_{{ $day->format('d') }}" value="{{ isset($workEnds[$day->toDateString()]) ? \Carbon\Carbon::parse($workEnds[$day->toDateString()])->format('H:i') : '' }}">
+                                        <input type="time" name="work_end_{{ $day->format('d') }}" value="{{ $workEnds[$day->toDateString()] ?? '' }}">
                                         <input type="checkbox" name="delete_end_{{ $day->format('d') }}"><span class="delete">削除</span>
                                     </label>
                                 </td>

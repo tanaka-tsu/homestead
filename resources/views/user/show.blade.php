@@ -25,7 +25,7 @@
                     <td align="center">{{ $user->name }}</td>
                 </tr>
                 <tr>
-                    <th>勤務時間</th>
+                    <th>勤務条件</th>
                     <td align="center">{{ $user->terms }}</td>
                 </tr>
                 <tr>

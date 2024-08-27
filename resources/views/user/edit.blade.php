@@ -50,7 +50,7 @@
                     @enderror
                     <div class="user-edit"><label>
                         <tr>
-                            <th>勤務時間</th>
+                            <th>勤務条件</th>
                             <td><select name="terms">
                                 <option value="9～18時" {{ old('terms', $user->terms) == '9～18時' ? 'selected' : '' }}>9～18時</option>
                                 <option value="10～19時" {{ old('terms', $user->terms) == '10～19時' ? 'selected' : '' }}>10～19時</option>

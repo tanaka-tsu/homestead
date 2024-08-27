@@ -22,6 +22,7 @@ class KintaiController extends Controller
     }
 
     private function kintaiForMonth($userId, $month) {
+        // 月ごとのレコードとそのidを取得
         $kintais = Kintai::where('user_id', $userId)
                           ->where('this_month', 'like', "$month%")
                           ->get();
@@ -34,6 +35,7 @@ class KintaiController extends Controller
     }
 
     private function getMonthly($selectedMonth) {
+        // 選択した月の月初から月末までを取得し配列に変換
         $period = [];
         $now = Carbon::parse($selectedMonth);
         $startOfMonth = $now->startOfMonth()->toDateString();
@@ -55,33 +57,38 @@ class KintaiController extends Controller
     public function show($userId) {
         if ($userId == Auth::id() || Auth::guard('admin')->check()) {
             $user = User::findOrFail($userId);
+            $pastKintais = $this->getPastKintais($userId);
+
             $currentMonth = Carbon::now()->format('Y-m');
             $selectedMonth = request('this_month', $currentMonth);
             $selectedMonthFormat = Carbon::parse($selectedMonth)->format('Y-m');
+
             $data = $this->kintaiForMonth($userId, $selectedMonth);
             $kintais = $data->kintais;
             $id = $data->id;
+
             $monthly = $this->getMonthly($selectedMonth);
-            $now = Carbon::parse($selectedMonth);
             $period = $monthly->period;
             $workStarts = [];
             $workEnds = [];
-            $pastKintais = $this->getPastKintais($userId);
 
             foreach ($period as $day) {
+                // カラム名を合わせる
                 $dateString = $day->toDateString();
                 $columnName1 = 'work_start_' . $day->format('d');
                 $columnName2 = 'work_end_' . $day->format('d');
 
                 foreach ($kintais as $kintai) {
-                    $workStarts[$dateString] = isset($kintai->$columnName1) ?
-                    Carbon::parse($kintai->$columnName1)->format('H:i') : null;
-                    $workEnds[$dateString] = isset($kintai->$columnName2) ?
-                    Carbon::parse($kintai->$columnName2)->format('H:i') : null;
+                    // カラムにデータがあれば時間形式で表示、なければnullを返す
+                    $workStart = isset($kintai->$columnName1) ? Carbon::parse($kintai->$columnName1) : null;
+                    $workEnd = isset($kintai->$columnName2) ? Carbon::parse($kintai->$columnName2) : null;
+
+                    $workStarts[$dateString] = $workStart ? $workStart->format('H:i') : null;
+                    $workEnds[$dateString] = $workEnd ? $workEnd->format('H:i') : null;
                 }
             }
 
-            return view('kintais.show', compact('id', 'user', 'now', 'period', 'workStarts', 'workEnds', 'pastKintais', 'currentMonth', 'selectedMonth', 'selectedMonthFormat'));
+            return view('kintais.show', compact('id', 'user', 'period', 'workStarts', 'workEnds', 'pastKintais', 'currentMonth', 'selectedMonth', 'selectedMonthFormat'));
         } else {
             abort(404);
         }
@@ -159,9 +166,9 @@ class KintaiController extends Controller
     }
 
     public function edit($id) {
-        // 必要なデータをそろえて表の準備
         $userId = Auth::id();
         $selectedMonth = request('this_month', Carbon::now()->format('Y-m'));
+
         $data = $this->kintaiForMonth($userId, $selectedMonth);
         $kintais = $data->kintais;
         $kintai = Kintai::findOrFail($id);
@@ -191,7 +198,6 @@ class KintaiController extends Controller
     }
 
     public function update(Request $request, $id) {
-        // 必要なデータをそろえて表の準備
         $kintai = Kintai::findOrFail($id);
         $selectedMonth = request('this_month', Carbon::now()->format('Y-m'));
         $monthly = $this->getMonthly($selectedMonth);

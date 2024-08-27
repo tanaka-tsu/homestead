@@ -10,7 +10,7 @@
                 <th width="20%">社員番号</th>
                 <th width="20%">所属</th>
                 <th width="30%">名前</th>
-                <th width="10%">勤務時間</th>
+                <th width="10%">勤務条件</th>
             </tr>
             @foreach ($users as $user)
                 <tr>

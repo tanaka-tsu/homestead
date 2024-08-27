@@ -48,7 +48,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="terms" class="col-md-4 col-form-label text-md-end">勤務時間</label>
+                            <label for="terms" class="col-md-4 col-form-label text-md-end">勤務条件</label>
 
                             <div class="col-md-6">
                                 <select id="terms" class="form-control @error('terms') is-invalid @enderror" name="terms" required autocomplete="terms" autofocus>

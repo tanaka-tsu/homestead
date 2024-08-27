@@ -14,7 +14,7 @@
                         <th width="20%">社員番号</th>
                         <th width="20%">所属</th>
                         <th width="30%">名前</th>
-                        <th width="10%">勤務時間</th>
+                        <th width="10%">勤務条件</th>
                     </tr>
                     <tr>
                         <td align="center">{{ $user->employee_id }}</td>
@@ -25,6 +25,7 @@
                 </table>
             </div>
         @endif
+
         <form method="GET" action="{{ route('show.kintais', ['userId' => $user->id]) }}">
             <div class="seledted-month">
                 <select name="this_month" onchange="this.form.submit()">
@@ -46,19 +47,15 @@
             <table border="1" align="center">
                 <thead>
                     <tr>
-                        <th width="15%">日付</th>
-                        <th width="20%">出勤</th>
-                        <th width="20%">退勤</th>
+                        <th width="10%">日付</th>
+                        <th width="15%">出勤時刻</th>
+                        <th width="15%">退勤時刻</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($period as $day)
-                        @php
-                            // 日曜日は赤文字にする
-                            $isSunday = \Carbon\Carbon::parse($day)->isSunday();
-                        @endphp
                         <tr align="center">
-                            <td class="vertical-text {{ $isSunday ? 'red-text' : '' }}">
+                            <td class="vertical-text {{ \Carbon\Carbon::parse($day)->isSunday() ? 'red-text' : '' }}">
                                 {{ $day->isoFormat('MM/DD（ddd）') }}
                             </td>
                             <td>
