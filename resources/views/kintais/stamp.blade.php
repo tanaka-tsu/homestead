@@ -13,9 +13,10 @@
             {{-- $workStartがnullなら出勤ボタンを表示 --}}
             @if(is_null($workStart))
                 <div class="stamp-btn"><button type="submit" name="work_start_">出勤</button></div>
-            {{-- $workStartがnullでなく、$workEndがnullなら退勤ボタンを表示 --}}
+            {{-- $workStartではなく$workEndがnullなら退勤ボタンを表示し、休憩時間を1時間追加する --}}
             @elseif(is_null($workEnd))
                 <div class="stamp-btn"><button type="submit" name="work_end_">退勤</button></div>
+                <input type="hidden" name="break_time_" value="01:00">
             @else
             {{-- $workStartも$workEndもnullでなければ打刻済みと表示 --}}
                 <div class="error">本日のデータは打刻済みです。</div>

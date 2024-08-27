@@ -10,11 +10,17 @@
         <div class="year-month">{{ $now->format('Y/m') }}</div>
         <div class="work-schedule">
             <table border="1" align="center">
+            <style>
+                td{
+                    padding: 5px 0;
+                }
+            </style>
                 <thead>
                     <tr>
                         <th width="15%">日付</th>
                         <th width="20%">出勤時刻</th>
                         <th width="20%">退勤時刻</th>
+                        <th width="20%">休憩時間</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,6 +43,12 @@
                                     <label>
                                         <input type="time" name="work_end_{{ $day->format('d') }}" value="{{ $workEnds[$day->toDateString()] ?? '' }}">
                                         <input type="checkbox" name="delete_end_{{ $day->format('d') }}"><span class="delete">削除</span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label>
+                                        <input type="time" name="break_time_{{ $day->format('d') }}" value="{{ $breakTimes[$day->toDateString()] ?? '' }}">
+                                        <input type="checkbox" name="delete_break_{{ $day->format('d') }}"><span class="delete">削除</span>
                                     </label>
                                 </td>
                             </tr>

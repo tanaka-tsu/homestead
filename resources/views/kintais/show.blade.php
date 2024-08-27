@@ -37,7 +37,7 @@
                 </select>
             </div>
         </form>
-        @if ($selectedMonthFormat == $currentMonth && $user->id == Auth::id())
+        @if ($id && $selectedMonthFormat == $currentMonth && $user->id == Auth::id())
             <div class="edit-btn"><a href="{{ route('edit.kintais', $id) }}">
                 編集モード
             </a></div>
@@ -50,6 +50,9 @@
                         <th width="10%">日付</th>
                         <th width="15%">出勤時刻</th>
                         <th width="15%">退勤時刻</th>
+                        <th width="15%">休憩時間</th>
+                        <th width="15%">勤務時間</th>
+                        <th width="10%">出勤判断</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,6 +66,15 @@
                             </td>
                             <td>
                                 {{ $workEnds[$day->toDateString()] ?? '' }}
+                            </td>
+                            <td>
+                                {{ $breakTimes[$day->toDateString()] ?? '' }}
+                            </td>
+                            <td>
+                                {{ $workHours[$day->toDateString()] ?? '' }}
+                            </td>
+                            <td>
+                                {{ $attendanceJudgment[$day->toDateString()] ?? '' }}
                             </td>
                         </tr>
                     @endforeach
