@@ -26,13 +26,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', function ($view) {
-            $authGroup = null;
+            $auth_group = null;
             if (Auth::guard('admin')->check()) {
-                $authGroup = 'admin';
+                $auth_group = 'admin';
             } elseif (Auth::check()) {
-                $authGroup = 'user';
+                $auth_group = 'user';
             }
-            $view->with('authGroup', $authGroup);
+            $view->with('auth_group', $auth_group);
         });
     }
 }

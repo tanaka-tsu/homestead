@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\KintaiRequest;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Kintai;
 use App\Models\User;
 use Carbon\Carbon;
@@ -21,9 +21,9 @@ class KintaiController extends Controller
         if ($kintai->user_id != Auth::id()) { abort(404); }
     }
 
-    private function kintaiForMonth($userId, $month) {
+    private function getKintaiForMonth($user_id, $month) {
         // 月ごとのレコードとそのidを取得
-        $kintais = Kintai::where('user_id', $userId)
+        $kintais = Kintai::where('user_id', $user_id)
                           ->where('this_month', 'like', "$month%")
                           ->get();
         $id = $kintais->pluck('id')->first();
@@ -34,13 +34,13 @@ class KintaiController extends Controller
         ];
     }
 
-    private function getMonthly($selectedMonth) {
+    private function getMonthly($select_month) {
         // 選択した月の月初から月末までを取得し配列に変換
         $period = [];
-        $now = Carbon::parse($selectedMonth);
-        $startOfMonth = $now->startOfMonth()->toDateString();
-        $endOfMonth = $now->endOfMonth()->toDateString();
-        $period = CarbonPeriod::create($startOfMonth, $endOfMonth)->toArray();
+        $now = Carbon::parse($select_month);
+        $start_of_month = $now->startOfMonth()->toDateString();
+        $end_of_month = $now->endOfMonth()->toDateString();
+        $period = CarbonPeriod::create($start_of_month, $end_of_month)->toArray();
 
         return (object) [
             'now' => $now,
@@ -48,85 +48,85 @@ class KintaiController extends Controller
         ];
     }
 
-    private function getPastKintais($userId) {
-        return Kintai::where('user_id', $userId)
+    private function getPastKintais($user_id) {
+        return Kintai::where('user_id', $user_id)
                     ->orderBy('this_month', 'desc')
                     ->pluck('this_month');
     }
 
-    public function show($userId) {
-        if ($userId == Auth::id() || Auth::guard('admin')->check()) {
-            $user = User::findOrFail($userId);
-            $pastKintais = $this->getPastKintais($userId);
+    public function show($user_id) {
+        if ($user_id == Auth::id() || Auth::guard('admin')->check()) {
+            $user = User::findOrFail($user_id);
+            $past_kintais = $this->getPastKintais($user_id);
 
-            $currentMonth = Carbon::now()->format('Y-m');
-            $selectedMonth = request('this_month', $currentMonth);
-            $selectedMonthFormat = Carbon::parse($selectedMonth)->format('Y-m');
+            $current_month = Carbon::now()->format('Y-m');
+            $select_month = request('this_month', $current_month);
+            $select_month_format = Carbon::parse($select_month)->format('Y-m');
 
-            $data = $this->kintaiForMonth($userId, $selectedMonth);
+            $data = $this->getKintaiForMonth($user_id, $select_month);
             $kintais = $data->kintais;
             $id = $data->id;
 
-            $monthly = $this->getMonthly($selectedMonth);
+            $monthly = $this->getMonthly($select_month);
             $period = $monthly->period;
-            $workStarts = [];
-            $workEnds = [];
-            $workHours = [];
-            $attendanceJudgment = [];
-            $breakTimes = [];
+            $work_starts = [];
+            $work_ends = [];
+            $work_hours = [];
+            $attendance_judgment = [];
+            $break_times = [];
 
             foreach ($period as $day) {
                 // カラム名を合わせる
-                $dateString = $day->toDateString();
+                $date_string = $day->toDateString();
                 $columnName1 = 'work_start_' . $day->format('d');
                 $columnName2 = 'work_end_' . $day->format('d');
                 $columnName3 = 'break_time_' . $day->format('d');
 
                 foreach ($kintais as $kintai) {
                     // カラムにデータがあれば時間形式で表示、なければnullを返す
-                    $workStart = isset($kintai->$columnName1) ? Carbon::parse($kintai->$columnName1) : null;
-                    $workEnd = isset($kintai->$columnName2) ? Carbon::parse($kintai->$columnName2) : null;
-                    $breakTime = isset($kintai->$columnName3) ? Carbon::parse($kintai->$columnName3) : null;
+                    $work_start = isset($kintai->$columnName1) ? Carbon::parse($kintai->$columnName1) : null;
+                    $work_end = isset($kintai->$columnName2) ? Carbon::parse($kintai->$columnName2) : null;
+                    $break_time = isset($kintai->$columnName3) ? Carbon::parse($kintai->$columnName3) : null;
 
-                    $workStarts[$dateString] = $workStart ? $workStart->format('H:i') : null;
-                    $workEnds[$dateString] = $workEnd ? $workEnd->format('H:i') : null;
-                    $breakTimes[$dateString] = $breakTime ? $breakTime->format('H:i') : null;
+                    $work_starts[$date_string] = $work_start ? $work_start->format('H:i') : null;
+                    $work_ends[$date_string] = $work_end ? $work_end->format('H:i') : null;
+                    $break_times[$date_string] = $break_time ? $break_time->format('H:i') : null;
 
-                    if ($workStart && $workEnd) {
+                    if ($work_start && $work_end) {
                         // 勤務時間を計算し、15分刻みで繰り下げる
-                        $breakTimeInMinutes = $breakTime ? $breakTime->hour * 60 + $breakTime->minute : 0;
-                        $minutesWorked = $workEnd->diffInMinutes($workStart) - $breakTimeInMinutes; // 休憩時間を引く
-                        $minutesWorked = floor($minutesWorked / 15) * 15;
+                        $break_time_in_minutes = $break_time ? $break_time->hour * 60 + $break_time->minute : 0;
+                        $minutes_worked = $work_end->diffInMinutes($work_start) - $break_time_in_minutes; // 休憩時間を引く
+                        $minutes_worked = floor($minutes_worked / 15) * 15;
 
                         // 分を時間と分に変換
-                        $hours = floor($minutesWorked / 60);
-                        $minutes = $minutesWorked % 60;
-                        $workHours[$dateString] = sprintf('%02d:%02d', $hours, $minutes);
+                        $hours = floor($minutes_worked / 60);
+                        $minutes = $minutes_worked % 60;
+                        $work_hours[$date_string] = sprintf('%02d:%02d', $hours, $minutes);
 
                         if ($hours >= 8) {
-                            $attendanceJudgment[$dateString] = '○';
+                            $attendance_judgment[$date_string] = '○';
                         } elseif ($hours >= 4) {
-                            $attendanceJudgment[$dateString] = '△';
+                            $attendance_judgment[$date_string] = '△';
                         } else {
-                            $attendanceJudgment[$dateString] = '×';
+                            $attendance_judgment[$date_string] = '×';
                         }
                     } else {
-                        $workHours[$dateString] = null;
+                        $work_hours[$date_string] = null;
                     }
                 }
             }
 
-            return view('kintais.show', compact('id', 'user', 'period', 'workStarts', 'workEnds', 'workHours', 'attendanceJudgment', 'breakTimes', 'pastKintais', 'currentMonth', 'selectedMonth', 'selectedMonthFormat'));
+            return view('kintais.show', compact('id', 'user', 'period', 'work_starts', 'work_ends', 'work_hours', 'attendance_judgment', 'break_times', 'past_kintais', 'current_month', 'select_month', 'select_month_format'));
         } else {
             abort(404);
         }
     }
 
     public function create() {
-        $userId = Auth::id();
+        $user_id = Auth::id();
         $now = Carbon::now();
         $month = $now->format('Y-m');
-        $data = $this->kintaiForMonth($userId, $month);
+        $data = $this->getKintaiForMonth($user_id, $month);
         $kintais = $data->kintais;
         $id = $data->id;
 
@@ -134,23 +134,30 @@ class KintaiController extends Controller
         if ($kintais->isEmpty()) {
             return view('kintais.create', compact('now'));
         } else {
-            return redirect()->route('stamp.kintais', $id);
+            return redirect()->route('kintais.stamp', $id);
         }
     }
 
-    public function store(KintaiRequest $request) {
+    public function store(Request $request) {
+        $request->validate([
+            'user_id' => 'required',
+            'this_month' => 'required',
+        ],[
+            'user_id.required' => 'User IDが確認できません。',
+            'this_month.required' => '年/月が確認できません。',
+        ]);
         $now = Carbon::now();
-        $workStart = 'work_start_'. $now->format('d');
+        $work_start = 'work_start_'. $now->format('d');
 
         // レコード作成に必要なデータを入れる
         $kintai = new Kintai();
         $kintai->user_id = $request->user_id;
         $kintai->this_month = $request->this_month;
-        $kintai->$workStart = $now;
+        $kintai->$work_start = $now;
 
         $kintai->save();
 
-        return redirect()->route('show.kintais', $kintai->user_id);
+        return redirect()->route('kintais.show', $kintai->user_id);
     }
 
     public function stamp($id) {
@@ -160,16 +167,16 @@ class KintaiController extends Controller
         // 今日のカラム名を取得
         $now = Carbon::now();
         $today = $now->format('d');
-        $workStart = 'work_start_' . $today;
-        $workEnd = 'work_end_' . $today;
-        $breakTime = 'break_time_' . $today;
+        $work_start = 'work_start_' . $today;
+        $work_end = 'work_end_' . $today;
+        $break_time = 'break_time_' . $today;
 
         return view('kintais.stamp')->with([
             'kintai' => $kintai,
             'now' => $now,
-            'workStart' => $kintai->$workStart,
-            'workEnd' => $kintai->$workEnd,
-            'breakTime' => $kintai->$breakTime,
+            'work_start' => $kintai->$work_start,
+            'work_end' => $kintai->$work_end,
+            'break_time' => $kintai->$break_time,
         ]);
     }
 
@@ -178,104 +185,104 @@ class KintaiController extends Controller
         $this->getUserIdOrFail($kintai);
 
         $now = Carbon::now();
-        $workStart = 'work_start_' . $now->format('d');
-        $workEnd = 'work_end_' . $now->format('d');
-        $breakTime = 'break_time_' . $now->format('d');
+        $work_start = 'work_start_' . $now->format('d');
+        $work_end = 'work_end_' . $now->format('d');
+        $break_time = 'break_time_' . $now->format('d');
 
-        // リクエストにwork_start_の値が含まれており、かつ今日の$workStartが空であれば現在時刻を追加
-        if ($request->has('work_start_') && !$kintai->$workStart) {
-            $kintai->$workStart = $now;
-        } elseif ($request->has('work_end_') && !$kintai->$workEnd) {
-            $kintai->$workEnd = $now;
-            $kintai->$breakTime = Carbon::createFromFormat('H:i', $request->input('break_time_'))->format('H:i');
+        // リクエストにwork_start_の値が含まれており、かつ今日の$work_startが空であれば現在時刻を追加
+        if ($request->has('work_start_') && !$kintai->$work_start) {
+            $kintai->$work_start = $now;
+        } elseif ($request->has('work_end_') && !$kintai->$work_end) {
+            $kintai->$work_end = $now;
+            $kintai->$break_time = Carbon::createFromFormat('H:i', $request->input('break_time_'))->format('H:i');
         } else {
-            return redirect()->route('stamp.kintais', $id)
+            return redirect()->route('kintais.stamp', $id)
                 ->with('error', 'すでに打刻されています。');
         }
 
         $kintai->save();
 
-        return redirect()->route('show.kintais', $kintai->user_id);
+        return redirect()->route('kintais.show', $kintai->user_id);
     }
 
     public function edit($id) {
-        $userId = Auth::id();
-        $selectedMonth = request('this_month', Carbon::now()->format('Y-m'));
+        $user_id = Auth::id();
+        $select_month = request('this_month', Carbon::now()->format('Y-m'));
 
-        $data = $this->kintaiForMonth($userId, $selectedMonth);
+        $data = $this->getKintaiForMonth($user_id, $select_month);
         $kintais = $data->kintais;
         $kintai = Kintai::findOrFail($id);
         $this->getUserIdOrFail($kintai);
-        $monthly = $this->getMonthly($selectedMonth);
+        $monthly = $this->getMonthly($select_month);
         $now = $monthly->now;
         $period = $monthly->period;
-        $workStarts = [];
-        $workEnds = [];
-        $breakTimes = [];
+        $work_starts = [];
+        $work_ends = [];
+        $break_times = [];
 
         foreach ($period as $day) {
             // カラム名を合わせる
-            $dateString = $day->toDateString();
+            $date_string = $day->toDateString();
             $columnName1 = 'work_start_' . $day->format('d');
             $columnName2 = 'work_end_' . $day->format('d');
             $columnName3 = 'break_time_' . $day->format('d');
 
             foreach ($kintais as $kintai) {
                 // カラムにデータがあれば時間形式で表示、なければnullを返す
-                $workStarts[$dateString] = isset($kintai->$columnName1) ?
+                $work_starts[$date_string] = isset($kintai->$columnName1) ?
                 Carbon::parse($kintai->$columnName1)->format('H:i') : null;
-                $workEnds[$dateString] = isset($kintai->$columnName2) ?
+                $work_ends[$date_string] = isset($kintai->$columnName2) ?
                 Carbon::parse($kintai->$columnName2)->format('H:i') : null;
-                $breakTimes[$dateString] = isset($kintai->$columnName3) ?
+                $break_times[$date_string] = isset($kintai->$columnName3) ?
                 Carbon::parse($kintai->$columnName3)->format('H:i') : null;
             }
         }
 
-        return view('kintais.edit', compact('id', 'userId', 'now', 'period', 'workStarts', 'workEnds', 'breakTimes'));
+        return view('kintais.edit', compact('id', 'user_id', 'now', 'period', 'work_starts', 'work_ends', 'break_times'));
     }
 
     public function update(Request $request, $id) {
         $kintai = Kintai::findOrFail($id);
-        $selectedMonth = request('this_month', Carbon::now()->format('Y-m'));
-        $monthly = $this->getMonthly($selectedMonth);
+        $select_month = request('this_month', Carbon::now()->format('Y-m'));
+        $monthly = $this->getMonthly($select_month);
         $period = $monthly->period;
 
         foreach ($period as $day) {
             // フォームのnameと合わせる
-            $dateString = $day->format('d');
-            $workStartKey = 'work_start_' . $dateString;
-            $workEndKey = 'work_end_' . $dateString;
-            $breakTimeKey = 'break_time_' . $dateString;
-            $deleteStartKey = 'delete_start_' . $dateString;
-            $deleteEndKey = 'delete_end_' . $dateString;
-            $deleteBreakKey = 'delete_break_' . $dateString;
+            $date_string = $day->format('d');
+            $work_start_key = 'work_start_' . $date_string;
+            $work_end_key = 'work_end_' . $date_string;
+            $break_time_key = 'break_time_' . $date_string;
+            $delete_start_key = 'delete_start_' . $date_string;
+            $delete_end_key = 'delete_end_' . $date_string;
+            $delete_break_key = 'delete_break_' . $date_string;
 
             // 削除ボックスにチェックが入っていれば値をnullにする
-            if ($request->has($deleteStartKey)) {
-                $kintai->$workStartKey = null;
-            } elseif ($request->has($workStartKey) && $request->input($workStartKey) !== null) {
+            if ($request->has($delete_start_key)) {
+                $kintai->$work_start_key = null;
+            } elseif ($request->has($work_start_key) && $request->input($work_start_key) !== null) {
                 // チェックが入っておらず、入力値がnullでなければ時間のみ上書き
-                $time = $request->input($workStartKey);
-                $kintai->$workStartKey = $day->toDateString() . ' ' . $time . '';
+                $time = $request->input($work_start_key);
+                $kintai->$work_start_key = $day->toDateString() . ' ' . $time . '';
             }
 
-            if ($request->has($deleteEndKey)) {
-                $kintai->$workEndKey = null;
-            } elseif ($request->has($workEndKey) && $request->input($workEndKey) !== null) {
-                $time = $request->input($workEndKey);
-                $kintai->$workEndKey = $day->toDateString() . ' ' . $time . '';
+            if ($request->has($delete_end_key)) {
+                $kintai->$work_end_key = null;
+            } elseif ($request->has($work_end_key) && $request->input($work_end_key) !== null) {
+                $time = $request->input($work_end_key);
+                $kintai->$work_end_key = $day->toDateString() . ' ' . $time . '';
             }
 
-            if ($request->has($deleteBreakKey)) {
-                $kintai->$breakTimeKey = null;
-            } elseif ($request->has($breakTimeKey) && $request->input($breakTimeKey) !== null) {
-                $time = $request->input($breakTimeKey);
-                $kintai->$breakTimeKey = $day->toDateString() . ' ' . $time . '';
+            if ($request->has($delete_break_key)) {
+                $kintai->$break_time_key = null;
+            } elseif ($request->has($break_time_key) && $request->input($break_time_key) !== null) {
+                $time = $request->input($break_time_key);
+                $kintai->$break_time_key = $day->toDateString() . ' ' . $time . '';
             }
         }
 
         $kintai->save();
 
-        return redirect()->route('show.kintais', $kintai->user_id);
+        return redirect()->route('kintais.show', $kintai->user_id);
     }
 }

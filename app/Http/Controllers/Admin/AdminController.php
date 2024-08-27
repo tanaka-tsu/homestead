@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\Paginator;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
@@ -50,25 +51,25 @@ class AdminController extends Controller
         ]);
 
         $admin->update($request->only(['name', 'email', 'admin_id']));
-        return redirect()->route('show.admin', $id);
+        return redirect()->route('admin.show', $id);
     }
 
     public function passwordForm($id) {
         $admin = $this->findAdminOrFail($id);
-        return view('admin.change', compact('admin', 'id'));
+        return view('admin.change_pass', compact('admin', 'id'));
     }
 
     public function changePassword(Request $request, $id) {
         $admin = $this->findAdminOrFail($id);
 
         if (!Hash::check($request->get('current-password'), $admin->password)) {
-            return redirect()->route('passwordForm.admin', $id)
+            return redirect()->route('admin.pass_form', $id)
                 ->withInput()
                 ->withErrors(['current-password' => '現在のパスワードと一致しません。']);
         }
 
         if ($request->get('current-password') === $request->get('new-password')) {
-            return redirect()->route('passwordForm.admin', $id)
+            return redirect()->route('admin.pass_form', $id)
                 ->withInput()
                 ->withErrors(['new-password' => '同じパスワードは登録できません。']);
         }
@@ -79,7 +80,7 @@ class AdminController extends Controller
         ]);
 
         $admin->update(['password' => Hash::make($request->get('new-password'))]);
-        return redirect()->route('show.admin', $id)
+        return redirect()->route('admin.show', $id)
             ->with('flash_message', 'パスワードを変更しました。');
     }
 }

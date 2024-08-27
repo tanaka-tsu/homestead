@@ -6,7 +6,7 @@
         <div class="card-header">勤怠打刻</div>
         <div class="today">{{ $now->format("Y/m/d") }}</div>
 
-        <form action="{{ route('store.kintais') }}" method='post'>
+        <form action="{{ route('kintais.store') }}" method='post'>
             @csrf
 
             <input type="hidden" name="user_id" value="{{ Auth::id() }}">

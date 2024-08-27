@@ -4,7 +4,7 @@
 <div class="container">
     <div class="card-body">
         <div class="back"></div>
-        <a href="{{ route('show.kintais', $userId) }}" class="back-btn">戻る</a>
+        <a href="{{ route('kintais.show', $user_id) }}" class="back-btn">戻る</a>
         <div class="card-header">勤怠表の編集</div>
 
         <div class="year-month">{{ $now->format('Y/m') }}</div>
@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <form action="{{ route('update.kintais', $id) }}" method='post'>
+                    <form action="{{ route('kintais.update', $id) }}" method='post'>
                         @csrf
                         @method('PATCH')
 
@@ -35,19 +35,19 @@
                                 </td>
                                 <td>
                                     <label>
-                                        <input type="time" name="work_start_{{ $day->format('d') }}" value="{{ $workStarts[$day->toDateString()] ?? '' }}">
+                                        <input type="time" name="work_start_{{ $day->format('d') }}" value="{{ $work_starts[$day->toDateString()] ?? '' }}">
                                         <input type="checkbox" name="delete_start_{{ $day->format('d') }}"><span class="delete">削除</span>
                                     </label>
                                 </td>
                                 <td>
                                     <label>
-                                        <input type="time" name="work_end_{{ $day->format('d') }}" value="{{ $workEnds[$day->toDateString()] ?? '' }}">
+                                        <input type="time" name="work_end_{{ $day->format('d') }}" value="{{ $work_ends[$day->toDateString()] ?? '' }}">
                                         <input type="checkbox" name="delete_end_{{ $day->format('d') }}"><span class="delete">削除</span>
                                     </label>
                                 </td>
                                 <td>
                                     <label>
-                                        <input type="time" name="break_time_{{ $day->format('d') }}" value="{{ $breakTimes[$day->toDateString()] ?? '' }}">
+                                        <input type="time" name="break_time_{{ $day->format('d') }}" value="{{ $break_times[$day->toDateString()] ?? '' }}">
                                         <input type="checkbox" name="delete_break_{{ $day->format('d') }}"><span class="delete">削除</span>
                                     </label>
                                 </td>

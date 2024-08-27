@@ -6,7 +6,7 @@
         <div class="card-header">社員情報</div>
 
         <div class="edit-btn mypage-edit">
-            <a href="{{ route('edit.user', $id) }}">
+            <a href="{{ route('user.edit', $id) }}">
                 編集
             </a>
         </div>
@@ -35,7 +35,7 @@
             </table>
         </div>
         <div class="edit-btn mypage-edit">
-            <a href="{{ route('passwordForm.user', $id) }}">
+            <a href="{{ route('user.pass_form', $id) }}">
                 パスワード変更
             </a>
         </div>

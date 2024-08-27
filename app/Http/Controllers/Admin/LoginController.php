@@ -59,7 +59,7 @@ class LoginController extends Controller
         }
 
         if (Auth::guard('admin')->attempt(['admin_id' => $request->admin_id, 'password' => $request->password], $request->get('remember'))) {
-            return redirect()->intended(route('index.admin'));
+            return redirect()->intended(route('admin.index'));
         }
 
         $this->incrementLoginAttempts($request);
@@ -73,6 +73,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect(route('login.admin'));
+        return redirect(route('admin.login'));
     }
 }

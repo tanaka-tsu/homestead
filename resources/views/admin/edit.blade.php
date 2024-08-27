@@ -4,11 +4,11 @@
 <div class="container">
     <div class="card-body">
         <div class="back"></div>
-        <a href="{{ route('show.admin', $id) }}" class="back-btn">戻る</a>
+        <a href="{{ route('admin.show', $id) }}" class="back-btn">戻る</a>
         <div class="card-header">管理者情報の編集</div>
 
         <div class="employee-edit">
-            <form action="{{ route('update.admin', $id) }}" method='post'>
+            <form action="{{ route('admin.update', $id) }}" method='post'>
                 @csrf
                 @method('PATCH')
 

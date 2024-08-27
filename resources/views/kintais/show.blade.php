@@ -26,19 +26,19 @@
             </div>
         @endif
 
-        <form method="GET" action="{{ route('show.kintais', ['userId' => $user->id]) }}">
+        <form method="GET" action="{{ route('kintais.show', ['userId' => $user->id]) }}">
             <div class="seledted-month">
                 <select name="this_month" onchange="this.form.submit()">
-                    @foreach ($pastKintais as $month)
-                    <option value="{{ $month }}" {{ $selectedMonth == $month ? 'selected' : '' }}>
+                    @foreach ($past_kintais as $month)
+                    <option value="{{ $month }}" {{ $select_month == $month ? 'selected' : '' }}>
                             {{ \Carbon\Carbon::parse($month)->format('Y/m') }}
                         </option>
                     @endforeach
                 </select>
             </div>
         </form>
-        @if ($id && $selectedMonthFormat == $currentMonth && $user->id == Auth::id())
-            <div class="edit-btn"><a href="{{ route('edit.kintais', $id) }}">
+        @if ($id && $select_month_format == $current_month && $user->id == Auth::id())
+            <div class="edit-btn"><a href="{{ route('kintais.edit', $id) }}">
                 編集モード
             </a></div>
         @endif
@@ -62,19 +62,19 @@
                                 {{ $day->isoFormat('MM/DD（ddd）') }}
                             </td>
                             <td>
-                                {{ $workStarts[$day->toDateString()] ?? '' }}
+                                {{ $work_starts[$day->toDateString()] ?? '' }}
                             </td>
                             <td>
-                                {{ $workEnds[$day->toDateString()] ?? '' }}
+                                {{ $work_ends[$day->toDateString()] ?? '' }}
                             </td>
                             <td>
-                                {{ $breakTimes[$day->toDateString()] ?? '' }}
+                                {{ $break_times[$day->toDateString()] ?? '' }}
                             </td>
                             <td>
-                                {{ $workHours[$day->toDateString()] ?? '' }}
+                                {{ $work_hours[$day->toDateString()] ?? '' }}
                             </td>
                             <td>
-                                {{ $attendanceJudgment[$day->toDateString()] ?? '' }}
+                                {{ $attendance_judgment[$day->toDateString()] ?? '' }}
                             </td>
                         </tr>
                     @endforeach

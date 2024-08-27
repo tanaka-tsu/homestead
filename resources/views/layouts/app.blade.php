@@ -24,10 +24,10 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                @if($authGroup === 'admin')
-                    <a class="navbar-brand" href="{{ route('index.admin') }}">
-                @elseif($authGroup === 'user')
-                    <a class="navbar-brand" href="{{ route('create.kintais') }}">
+                @if($auth_group === 'admin')
+                    <a class="navbar-brand" href="{{ route('admin.index') }}">
+                @elseif($auth_group === 'user')
+                    <a class="navbar-brand" href="{{ route('kintais.create') }}">
                 @else
                     <a class="navbar-brand" href="{{ route('login') }}">
                 @endif
@@ -45,42 +45,42 @@
                         <!-- Authentication Links -->
                         @if(Auth::guard('admin')->check())
                             <li>
-                                <a class="nav-link" href="{{ route('index.admin') }}">
+                                <a class="nav-link" href="{{ route('admin.index') }}">
                                     社員一覧
                                 </a>
-                                <a class="nav-link" href="{{ route('show.admin', ['id' => Auth::guard('admin')->user()->id]) }}">
+                                <a class="nav-link" href="{{ route('admin.show', ['id' => Auth::guard('admin')->user()->id]) }}">
                                     管理者情報
                                 </a>
-                                <a class="nav-link" href="{{ route('register.admin') }}">
+                                <a class="nav-link" href="{{ route('admin.register') }}">
                                     管理者登録
                                 </a>
                             </li>
                             <li>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item" href="{{ route('admin.logout') }}"
                                     onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
                                     Logout
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout.admin') }}" method="POST" class="d-none">
+                                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>
                             </li>
-                        @elseif(Auth::check() && $authGroup === 'user')
+                        @elseif(Auth::check() && $auth_group === 'user')
                             <li class="nav-item dropdown">
-                                <a class="nav-link" href="{{ route('create.kintais') }}">
+                                <a class="nav-link" href="{{ route('kintais.create') }}">
                                     打刻
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link" href="{{ route('show.kintais', Auth::id()) }}">
+                                <a class="nav-link" href="{{ route('kintais.show', Auth::id()) }}">
                                     勤怠表
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link" href="{{ route('show.user', Auth::id()) }}">
+                                <a class="nav-link" href="{{ route('user.show', Auth::id()) }}">
                                     マイページ
                                 </a>
                             </li>
@@ -112,7 +112,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login.admin') }}">
+                                    <a class="nav-link" href="{{ route('admin.login') }}">
                                         ＊
                                     </a>
                                 </li>

@@ -45,25 +45,25 @@ class UserController extends Controller
         ]);
 
         $user->update($request->only(['employee_id', 'office', 'name', 'terms', 'email']));
-        return redirect()->route('show.user', $user->id);
+        return redirect()->route('user.show', $user->id);
     }
 
     public function passwordForm($id) {
         $user = $this->findUserOrFail($id);
-        return view('user.change', compact('user', 'id'));
+        return view('user.change_pass', compact('user', 'id'));
     }
 
     public function changePassword(Request $request, $id) {
         $user = $this->findUserOrFail($id);
 
         if (!Hash::check($request->get('current-password'), $user->password)) {
-            return redirect()->route('passwordForm.user', $user->id)
+            return redirect()->route('user.pass_form', $user->id)
                 ->withInput()
                 ->withErrors(['current-password' => '現在のパスワードと一致しません。']);
         }
 
         if ($request->get('current-password') === $request->get('new-password')) {
-            return redirect()->route('passwordForm.user', $user->id)
+            return redirect()->route('user.pass_form', $user->id)
                 ->withInput()
                 ->withErrors(['new-password' => '同じパスワードは登録できません。']);
         }
@@ -74,7 +74,7 @@ class UserController extends Controller
         ]);
 
         $user->update(['password' => Hash::make($request->get('new-password'))]);
-        return redirect()->route('show.user', $user->id)
+        return redirect()->route('user.show', $user->id)
             ->with('flash_message', 'パスワードを変更しました。');
     }
 }

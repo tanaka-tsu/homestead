@@ -4,11 +4,11 @@
 <div class="container">
     <div class="card-body">
         <div class="back"></div>
-        <a href="{{ route('show.user', $id) }}" class="back-btn">戻る</a>
+        <a href="{{ route('user.show', $id) }}" class="back-btn">戻る</a>
         <div class="card-header">パスワード変更</div>
 
         <div class="employee-edit">
-            <form action="{{ route('changePassword.user', $id) }}" method='post'>
+            <form action="{{ route('user.change_pass', $id) }}" method='post'>
                 @csrf
                 @method('PATCH')
 

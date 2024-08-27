@@ -4,7 +4,7 @@
 <div class="container">
     <div class="card-body">
         <div class="card-header">管理者ログイン</div>
-        <form method="POST" action="{{ route('loggedIn.admin') }}">
+        <form method="POST" action="{{ route('admin.logged_in') }}">
             @csrf
 
             <div class="row mb-3">

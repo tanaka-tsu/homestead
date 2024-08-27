@@ -6,7 +6,7 @@
         <div class="card-header">管理者情報</div>
 
         <div class="edit-btn mypage-edit">
-            <a href="{{ route('edit.admin', $id) }}">
+            <a href="{{ route('admin.edit', $id) }}">
                 編集
             </a>
         </div>
@@ -27,7 +27,7 @@
             </table>
         </div>
         <div class="edit-btn mypage-edit">
-            <a href="{{ route('passwordForm.admin', $id) }}">
+            <a href="{{ route('admin.pass_form', $id) }}">
                 パスワード変更
             </a>
         </div>

@@ -4,11 +4,11 @@
 <div class="container">
     <div class="card-body">
         <div class="back"></div>
-        <a href="{{ route('show.user', $id) }}" class="back-btn">戻る</a>
+        <a href="{{ route('user.show', $id) }}" class="back-btn">戻る</a>
         <div class="card-header">社員情報の編集</div>
 
         <div class="employee-edit">
-            <form action="{{ route('update.user', $id) }}" method='post'>
+            <form action="{{ route('user.update', $id) }}" method='post'>
                 @csrf
                 @method('PATCH')
 

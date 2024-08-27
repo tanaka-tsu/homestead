@@ -6,19 +6,19 @@
         <div class="card-header">勤怠打刻</div>
         <div class="today">{{ $now->format("Y/m/d") }}</div>
 
-        <form action="{{ route('add.kintais', $kintai->id) }}" method='post'>
+        <form action="{{ route('kintais.add', $kintai->id) }}" method='post'>
             @csrf
             @method('PATCH')
 
-            {{-- $workStartがnullなら出勤ボタンを表示 --}}
-            @if(is_null($workStart))
+            {{-- $work_startがnullなら出勤ボタンを表示 --}}
+            @if(is_null($work_start))
                 <div class="stamp-btn"><button type="submit" name="work_start_">出勤</button></div>
-            {{-- $workStartではなく$workEndがnullなら退勤ボタンを表示し、休憩時間を1時間追加する --}}
-            @elseif(is_null($workEnd))
+            {{-- $work_startではなく$work_endがnullなら退勤ボタンを表示し、休憩時間を1時間追加する --}}
+            @elseif(is_null($work_end))
                 <div class="stamp-btn"><button type="submit" name="work_end_">退勤</button></div>
                 <input type="hidden" name="break_time_" value="01:00">
             @else
-            {{-- $workStartも$workEndもnullでなければ打刻済みと表示 --}}
+            {{-- $work_startも$work_endもnullでなければ打刻済みと表示 --}}
                 <div class="error">本日のデータは打刻済みです。</div>
             @endif
             {{-- 何らかの形で再打刻しようとした場合はエラー表示 --}}

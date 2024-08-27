@@ -22,92 +22,92 @@ Auth::routes();
 
 // 管理者ログイン・新規登録
 Route::get('/admin/login', [LoginController::class, 'showAdminLoginForm'])
-    ->name('login.admin');
+    ->name('admin.login');
 
 Route::post('/admin/login', [LoginController::class, 'adminLogin'])
-    ->name('loggedIn.admin');
+    ->name('admin.logged_in');
 
 Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::get('/admin/register', [RegisterController::class, 'showAdminRegisterForm'])
-        ->name('register.admin');
+        ->name('admin.register');
 
     Route::post('/admin/register', [RegisterController::class, 'registerAdmin']);
 
     Route::post('/admin/logout', [LoginController::class, 'logout'])
-        ->name('logout.admin');
+        ->name('admin.logout');
 
     // 管理者用ページ
     Route::get('/admin', [AdminController::class, 'index'])
-        ->name('index.admin');
+        ->name('admin.index');
 
     Route::get('/admin/{id}', [AdminController::class,'show'])
-        ->name('show.admin')
+        ->name('admin.show')
         ->where('id','[0-9]+');
 
     Route::get('/admin/{id}/edit', [AdminController::class,'edit'])
-        ->name('edit.admin')
+        ->name('admin.edit')
         ->where('id','[0-9]+');
 
     Route::patch('/admin/{id}/update', [AdminController::class,'update'])
-        ->name('update.admin')
+        ->name('admin.update')
         ->where('id','[0-9]+');
 
     Route::get('/admin/{id}/change', [AdminController::class,'passwordForm'])
-        ->name('passwordForm.admin')
+        ->name('admin.pass_form')
         ->where('id','[0-9]+');
 
     Route::patch('/admin/{id}/change', [AdminController::class,'changePassword'])
-        ->name('changePassword.admin')
+        ->name('admin.change_pass')
         ->where('id','[0-9]+');
 });
 
 
 // マイページ
 Route::get('/user/{id}', [UserController::class,'show'])
-    ->name('show.user')
+    ->name('user.show')
     ->where('id','[0-9]+');
 
 Route::get('/user/{id}/edit', [UserController::class,'edit'])
-    ->name('edit.user')
+    ->name('user.edit')
     ->where('id','[0-9]+');
 
 Route::patch('/user/{id}/update', [UserController::class,'update'])
-    ->name('update.user')
+    ->name('user.update')
     ->where('id','[0-9]+');
 
 Route::get('/user/{id}/change', [UserController::class,'passwordForm'])
-    ->name('passwordForm.user')
+    ->name('user.pass_form')
     ->where('id','[0-9]+');
 
 Route::patch('/user/{id}/change', [UserController::class,'changePassword'])
-    ->name('changePassword.user')
+    ->name('user.change_pass')
     ->where('id','[0-9]+');
 
 
 // 勤怠登録
 Route::get('/', [KintaiController::class,'create'])
-    ->name('create.kintais');
+    ->name('kintais.create');
 
 Route::post('/kintais/store', [KintaiController::class,'store'])
-    ->name('store.kintais');
+    ->name('kintais.store');
 
 Route::get('/kintais/{id}/stamp', [KintaiController::class,'stamp'])
-    ->name('stamp.kintais')
+    ->name('kintais.stamp')
     ->where('id','[0-9]+');
 
 Route::patch('/kintais/{id}/add', [KintaiController::class,'add'])
-    ->name('add.kintais')
+    ->name('kintais.add')
     ->where('id','[0-9]+');
 
 Route::get('/kintais/{userId}/show', [KintaiController::class,'show'])
-    ->name('show.kintais')
+    ->name('kintais.show')
     ->where('userId','[0-9]+');
 
 Route::get('/kintais/{id}/edit', [KintaiController::class,'edit'])
-    ->name('edit.kintais')
+    ->name('kintais.edit')
     ->where('id','[0-9]+');
 
 Route::patch('/kintais/{id}/update', [KintaiController::class,'update'])
-    ->name('update.kintais')
+    ->name('kintais.update')
     ->where('id','[0-9]+');
