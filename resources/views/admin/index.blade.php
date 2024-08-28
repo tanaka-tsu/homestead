@@ -16,19 +16,13 @@
                 <tr>
                     <td align="center">{{ $user->employee_id }}</td>
                     <td align="center">{{ $user->office }}</td>
-                    <td align="center"><a href="{{ route('kintais.show', ['userId' => $user->id]) }}">{{ $user->name }}</a></td>
-                    <td align="center">{{ $user->terms }}</td>
+                    <td align="center" class="td-a"><a href="{{ route('kintais.show', ['userId' => $user->id]) }}">{{ $user->name }}</a></td>
+                    <td align="center" class="td-a"><a href="{{ route('user.edit', $user->id) }}">{{ $user->terms }}</a></td>
                 </tr>
             @endforeach
         </table>
         {{ $users->links() }}
 
-        <div class="adminis">管理者一覧</div>
-        @foreach ($admins as $admin)
-            <div class="administrators-list">
-                <p>{{ $admin->name }}</p>
-            </div>
-        @endforeach
     </div>
 </div>
 @endsection

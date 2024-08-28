@@ -48,11 +48,10 @@
                                 <a class="nav-link" href="{{ route('admin.index') }}">
                                     社員一覧
                                 </a>
+                            </li>
+                            <li>
                                 <a class="nav-link" href="{{ route('admin.show', ['id' => Auth::guard('admin')->user()->id]) }}">
-                                    管理者情報
-                                </a>
-                                <a class="nav-link" href="{{ route('admin.register') }}">
-                                    管理者登録
+                                    Admin
                                 </a>
                             </li>
                             <li>

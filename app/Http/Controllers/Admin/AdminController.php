@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Pagination\Paginator;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Location;
+use App\Models\Condition;
 
 class AdminController extends Controller
 {
@@ -24,13 +24,17 @@ class AdminController extends Controller
 
     public function index() {
         $users = User::latest()->paginate(5);
-        $admins = Admin::latest()->get();
-        return view('admin.index', compact('users', 'admins'));
+
+        return view('admin.index', compact('users'));
     }
 
     public function show($id) {
         $admin = $this->findAdminOrFail($id);
-        return view('admin.show', compact('admin', 'id'));
+        $admins = Admin::latest()->get();
+        $locations = Location::all();
+        $conditions = Condition::all();
+
+        return view('admin.show', compact('id', 'admin', 'admins', 'locations', 'conditions'));
     }
 
     public function edit($id) {
