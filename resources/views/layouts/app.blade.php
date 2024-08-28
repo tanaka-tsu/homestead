@@ -50,7 +50,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" href="{{ route('admin.show', ['id' => Auth::guard('admin')->user()->id]) }}">
+                                <a class="nav-link" href="{{ route('admin.show', Auth::guard('admin')->user()->id) }}">
                                     Admin
                                 </a>
                             </li>

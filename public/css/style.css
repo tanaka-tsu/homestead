@@ -23,14 +23,7 @@
     display: flex;
     list-style: none;
 }
-.me-auto{
-    /* リンク左側 */
-}
-.ms-auto{
-    /* リンク右側 */
-}
 .nav-link,.dropdown-item{
-    /* リンクの文字とか */
     margin-left: 15px;
     color: azure;
 }
@@ -38,8 +31,6 @@
 /*
 ヘッダーとメイン
 */
-.container{
-}
 /* コンテンツタイトル */
 .card-header{
     font-weight: bold;
@@ -53,25 +44,48 @@
 .invalid-feedback{
     color: red;
 }
-/* パスワード変更 */
-.change-success{
-    margin: 20px 0;
-    color: #00608d;
+/* 下部コンテンツ */
+.second_content{
+    margin: 50px 0 10px 0;
     font-weight: bold;
-    font-size: 14px;
+    text-align: center;
+}
+.third_content{
+    margin: 50px 0 20px 0;
+    font-weight: bold;
     text-align: center;
 }
 /* 戻るボタン */
 .back{
-    height: 10px;
+    height: 20px;
 }
 .back-btn{
     color: white;
-    margin-left: 10px;
+    margin-left: 20%;
     padding: 5px 15px;
     background-color: #00ac9a;
     border: none;
     border-radius: 15px;
+    cursor: pointer;
+}
+/* 編集ボタン */
+.btn-flex{
+    margin: 0 35%;
+    width: 30%;
+    display: flex;
+    justify-content: space-around;
+}
+.edit-btn{
+    margin: 10px 0;
+    text-align: center;
+}
+.edit-btn>button,.edit-btn>a{
+    color: white;
+    font-size: 14px;
+    padding: 5px 15px;
+    background-color: #00ac9a;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
 }
 /* ページネーション */
@@ -103,6 +117,7 @@
 a{
     text-decoration: none;
     color: #00885a;
+    cursor: pointer;
 }
 /* テーブル */
 table, td, th{
@@ -138,7 +153,6 @@ table, td, th{
     background-color: #00ac9a;
     border: none;
     border-radius: 15px;
-    cursor: pointer;
 }
 
 /*
@@ -152,19 +166,6 @@ table, td, th{
     text-align: center;
     font-weight: bold;
     margin-top: 10px;
-}
-.edit-btn{
-    margin: 10px 0;
-    text-align: center;
-}
-.edit-btn>button,.edit-btn>a{
-    color: white;
-    font-size: 16px;
-    padding: 5px 15px;
-    background-color: #00ac9a;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
 }
 .delete{
     color: #00608d;
@@ -186,17 +187,50 @@ table, td, th{
 .user-edit{
     text-align: center;
 }
-
-
-/*
-管理者ページ
-*/
-.adminis{
-    margin-top: 40px;
+/* パスワード変更 */
+.change-success{
+    margin: 20px 0;
+    color: #00608d;
     font-weight: bold;
+    font-size: 14px;
     text-align: center;
 }
-.administrators-list{
-    list-style: none;
-    text-align: center;
+.not-edit{
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+/* 管理者画面 */
+.back-index{
+    margin-left: 30px;
+}
+td>a{
+    font-weight: bold;
+}
+.td-a:hover {
+    background-color: #e9ecef;
+}
+.input_form{
+    margin-bottom: -5px;
+}
+.input_form>input{
+    border-radius: 5px;
+    border-color: #dee2e6;
+}
+.options-del{
+    font-weight: bold;
+    border-style: none;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+}
+.options-del:hover{
+    background-color: #e9ecef;
+}
+.third_content-flex{
+    display: flex;
+    justify-content: center;
+}
+.third_content-1{
+    margin-right: 50px;
 }

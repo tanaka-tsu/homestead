@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Location;
+use App\Models\Condition;
 
 class UserController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('edit', 'update');
     }
 
     private function findUserOrFail($id) {
@@ -24,28 +26,38 @@ class UserController extends Controller
     }
 
     public function edit($id) {
-        $user = $this->findUserOrFail($id);
-        return view('user.edit', compact('user', 'id'));
+        $user = User::findOrFail($id);
+        if ($id == Auth::id() || Auth::guard('admin')->check()) {
+            $locations = Location::all();
+            $conditions = Condition::all();
+
+            return view('user.edit', compact('user', 'id', 'locations', 'conditions'));
+        } else {
+            abort(404);
+        }
     }
 
     public function update(Request $request, $id) {
-        $user = $this->findUserOrFail($id);
-        $request->validate([
-            'employee_id' => 'required',
-            'office' => 'required',
-            'name' => 'required',
-            'terms' => 'required',
-            'email' => 'required',
-        ],[
-            'employee_id.required' => '社員番号が入力されていません。',
-            'office.required' => '所属が選択されていません。',
-            'name.required' => '名前が入力されていません。',
-            'terms.required' => '条件が選択されていません。',
-            'email.required' => 'メールアドレスが入力されていません。',
-        ]);
-
-        $user->update($request->only(['employee_id', 'office', 'name', 'terms', 'email']));
-        return redirect()->route('user.show', $user->id);
+        $user = User::findOrFail($id);
+        if ($id == Auth::id() || Auth::guard('admin')->check()) {
+            $request->validate([
+                'employee_id' => 'required',
+                'office' => 'required',
+                'name' => 'required',
+                'terms' => 'required',
+                'email' => 'required',
+            ],[
+                'employee_id.required' => '社員番号が入力されていません。',
+                'office.required' => '所属が選択されていません。',
+                'name.required' => '名前が入力されていません。',
+                'terms.required' => '条件が選択されていません。',
+                'email.required' => 'メールアドレスが入力されていません。',
+            ]);
+            $user->update($request->only(['employee_id', 'office', 'name', 'terms', 'email']));
+            return redirect()->route('user.show', $user->id);
+        } else {
+            abort(404);
+        }
     }
 
     public function passwordForm($id) {

@@ -3,13 +3,30 @@
 @section('content')
 <div class="container">
     <div class="card-body">
+        <div class="back"></div>
+        <a href="{{ route('admin.show', Auth::guard('admin')->user()->id) }}" class="back-btn">戻る</a>
         <div class="card-header">管理者登録</div>
 
         <form method="POST" action="{{ url('admin/register') }}">
             @csrf
 
             <div class="row mb-3">
-                <label for="name" class="col-md-4 col-form-label text-md-end">氏名</label>
+                <label for="admin_id" class="col-md-4 col-form-label text-md-end">管理者ID</label>
+
+                <div class="col-md-6">
+                    <input id="admin_id" type="admin_id" class="form-control @error('admin_id') is-invalid @enderror" name="admin_id" value="{{ old('admin_id') }}" required autocomplete="admin_id">
+
+                    @error('admin_id')
+                        <br>
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="name" class="col-md-4 col-form-label text-md-end">名前</label>
 
                 <div class="col-md-6">
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -30,21 +47,6 @@
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                     @error('email')
-                        <br>
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label for="admin_id" class="col-md-4 col-form-label text-md-end">管理者ID</label>
-
-                <div class="col-md-6">
-                    <input id="admin_id" type="admin_id" class="form-control @error('admin_id') is-invalid @enderror" name="admin_id" value="{{ old('admin_id') }}" required autocomplete="admin_id">
-
-                    @error('admin_id')
                         <br>
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

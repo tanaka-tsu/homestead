@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KintaiController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OptionController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\RegisterController;
@@ -19,6 +20,9 @@ use App\Http\Controllers\Admin\RegisterController;
 */
 
 Auth::routes();
+
+Route::get('/register', [OptionController::class, 'options'])
+    ->name('register');
 
 // 管理者ログイン・新規登録
 Route::get('/admin/login', [LoginController::class, 'showAdminLoginForm'])
@@ -59,6 +63,17 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     Route::patch('/admin/{id}/change', [AdminController::class,'changePassword'])
         ->name('admin.change_pass')
+        ->where('id','[0-9]+');
+
+    Route::post('/admin/add/store', [OptionController::class, 'store'])
+        ->name('options.store');
+
+    Route::delete('/admin/location_destroy/{id}', [OptionController::class, 'locationDestroy'])
+        ->name('options.locationDestroy')
+        ->where('id','[0-9]+');
+
+    Route::delete('/admin/condition_destroy/{id}', [OptionController::class, 'conditionDestroy'])
+        ->name('options.conditionDestroy')
         ->where('id','[0-9]+');
 });
 

@@ -5,6 +5,10 @@
 {{-- @extends内の@yield('content')部分に@endsection部分までを表示させる宣言 --}}
 <div class="container">
     <div class="card-body">
+        @if(Auth::guard('admin')->check())
+            <div class="back"></div>
+            <a href="{{ route('admin.index') }}" class="back-btn back-index">戻る</a>
+        @endif
         <div class="card-header">{{ $user->name }}さんの勤怠表</div>
 
         @if(Auth::guard('admin')->check())
@@ -26,7 +30,7 @@
             </div>
         @endif
 
-        <form method="GET" action="{{ route('kintais.show', ['userId' => $user->id]) }}">
+        <form method="GET" action="{{ route('kintais.show', $user->id) }}">
             <div class="seledted-month">
                 <select name="this_month" onchange="this.form.submit()">
                     @foreach ($past_kintais as $month)
