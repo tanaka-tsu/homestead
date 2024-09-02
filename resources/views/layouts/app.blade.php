@@ -46,7 +46,7 @@
                         @if(Auth::guard('admin')->check())
                             <li>
                                 <a class="nav-link" href="{{ route('admin.index') }}">
-                                    社員一覧
+                                    勤怠データ
                                 </a>
                             </li>
                             <li>

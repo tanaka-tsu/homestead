@@ -70,6 +70,9 @@ Route::prefix('admin')->group(function () {
         Route::delete('condition_destroy/{id}', [OptionController::class, 'conditionDestroy'])
             ->name('options.conditionDestroy');
 
+        Route::get('search', [AdminController::class, 'search'])
+            ->name('admin.search');
+    });
 });
 
 

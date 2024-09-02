@@ -89,6 +89,13 @@
     border-radius: 10px;
     cursor: pointer;
 }
+/* ホバー */
+.edit-btn>button:hover,
+.edit-btn>a:hover,
+.back-btn:hover,
+.stamp-btn>button:hover{
+    opacity: 0.7;
+}
 /* ページネーション */
 .pagination {
     display: flex;
@@ -157,6 +164,7 @@ td{
     background-color: #00ac9a;
     border: none;
     border-radius: 15px;
+    cursor: pointer;
 }
 
 /*
@@ -242,6 +250,12 @@ td>a{
 .input_form>input{
     border-radius: 5px;
     border-color: #dee2e6;
+}
+.input_form>label>select{
+    border-radius: 5px;
+    border-color: #dee2e6;
+    border-style: inset;
+    border-width: 2px;
 }
 .employee-data{
     margin-top: 20px;

@@ -14,7 +14,7 @@
                 <label for="admin_id" class="col-md-4 col-form-label text-md-end">管理者ID</label>
 
                 <div class="col-md-6">
-                    <input id="admin_id" type="admin_id" class="form-control @error('admin_id') is-invalid @enderror" name="admin_id" value="{{ old('admin_id') }}" required autocomplete="admin_id">
+                    <input id="admin_id" type="id" class="form-control @error('admin_id') is-invalid @enderror" name="admin_id" value="{{ old('admin_id') }}" required autocomplete="admin_id">
 
                     @error('admin_id')
                         <br>

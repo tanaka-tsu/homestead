@@ -29,4 +29,20 @@ class Kernel extends ConsoleKernel
 
         require base_path('routes/console.php');
     }
+
+    // protected function schedule(Schedule $schedule)
+    // {
+    //     $schedule->call(function () {
+    //         // 全ユーザーを取得
+    //         $users = User::all();
+
+    //         foreach ($users as $user) {
+    //             // 各ユーザーのKintaiレコードを作成
+    //             Kintai::create([
+    //                 'user_id' => $user->id,
+    //                 'this_month' => Carbon::now()->startOfMonth(),
+    //             ]);
+    //         }
+    //     })->monthlyOn(1, '00:00'); // 毎月1日の午前0時に実行
+    // }
 }

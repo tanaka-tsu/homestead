@@ -70,11 +70,19 @@ class KintaiController extends Controller
 
             // プルダウンで過去の勤怠データを選択した場合
             $select_month = request('this_month', $this_month);
-            $past_kintais = $this->getPastKintais($user_id);
+            $past_kintais = $this->getPastKintais($user_id)->toArray();
             $select_month_format = Carbon::parse($select_month)->format('Y-m');
             $data = $this->getKintaiForMonth($user_id, $select_month);
+
+            // 勤怠データが存在するかチェック
             $kintais = $data->kintais;
             $id = $data->id;
+            $data_exists = !$kintais->isEmpty();
+
+            // 今月のデータがない場合はプルダウンに選択肢を追加
+            if (!$data_exists) {
+                array_unshift($past_kintais, $this_month);
+            }
 
             // 表の準備
             $monthly = $this->getMonthly($select_month);
@@ -124,7 +132,7 @@ class KintaiController extends Controller
                 }
             }
 
-            return view('kintais.show', compact('id', 'user', 'period', 'work_starts', 'work_ends', 'break_times', 'work_hours', 'attendance_judgment', 'past_kintais', 'select_month', 'select_month_format', 'this_month'));
+            return view('kintais.show', compact('id', 'user', 'period', 'work_starts', 'work_ends', 'break_times', 'work_hours', 'attendance_judgment', 'past_kintais', 'select_month', 'select_month_format', 'this_month', 'data_exists'));
         } else {
             abort(404);
         }
