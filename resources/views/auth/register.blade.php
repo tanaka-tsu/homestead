@@ -74,7 +74,7 @@
                                 <select id="terms" class="form-control @error('terms') is-invalid @enderror" name="terms" required autocomplete="terms" autofocus>
                                     <option value="" hidden>選択してください</option>
                                     @foreach($conditions as $condition)
-                                        <option value="{{ $condition->dedtail }}" {{ old('terms') == $condition->dedtail ? 'selected' : '' }}>{{ $condition->dedtail }}</option>
+                                        <option value="{{ $condition->detail }}" {{ old('terms') == $condition->detail ? 'selected' : '' }}>{{ $condition->detail }}</option>
                                     @endforeach
                                 </select>
                                 @error('terms')

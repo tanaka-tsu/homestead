@@ -4,7 +4,7 @@
 <div class="container">
     <div class="card-body">
         <div class="back"></div>
-        <a href="{{ route('kintais.show', $user_id) }}" class="back-btn">戻る</a>
+        <a href="{{ route('kintais.show', ['model' => 'user', 'id' => $user_id]) }}" class="back-btn">戻る</a>
         <div class="card-header">勤怠表の編集</div>
 
         <div class="year-month">{{ $now->format('Y/m') }}</div>

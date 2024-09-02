@@ -12,16 +12,16 @@
                 <th width="30%">名前</th>
                 <th width="10%">勤務条件</th>
             </tr>
-            @foreach ($users as $user)
+            @foreach ($users_list as $user)
                 <tr>
                     <td align="center">{{ $user->employee_id }}</td>
                     <td align="center">{{ $user->office }}</td>
-                    <td align="center" class="td-a"><a href="{{ route('kintais.show', $user->id) }}">{{ $user->name }}</a></td>
+                    <td align="center" class="td-a"><a href="{{ route('kintais.show', ['model' => 'user', 'id' => $user->id]) }}">{{ $user->name }}</a></td>
                     <td align="center" class="td-a"><a href="{{ route('user.edit', $user->id) }}">{{ $user->terms }}</a></td>
                 </tr>
             @endforeach
         </table>
-        {{ $users->links() }}
+        {{ $users_list->links() }}
 
     </div>
 </div>

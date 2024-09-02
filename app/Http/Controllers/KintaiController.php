@@ -53,19 +53,30 @@ class KintaiController extends Controller
                     ->pluck('this_month');
     }
 
-    public function show($user_id) {
-        if ($user_id == Auth::id() || Auth::guard('admin')->check()) {
-            $user = User::findOrFail($user_id);
+    public function show($model, $id) {
+        if (Auth::guard('admin')->check() || $model == 'user' && $id == Auth::id()){
+            if ($model == 'user') {
+                $user = User::findOrFail($id);
+                $user_id = $user->id;
+                $kintai = Kintai::findOrFail($user_id);
+                $this_month = Carbon::now()->format('Y-m');
+            } elseif ($model == 'kintai') {
+                // adminユーザーが検索から開く場合のルート
+                $kintai = Kintai::findOrFail($id);
+                $user_id = $kintai->user_id;
+                $user = User::findOrFail($user_id);
+                $this_month = $kintai->this_month;
+            }
+
+            // プルダウンで過去の勤怠データを選択した場合
+            $select_month = request('this_month', $this_month);
             $past_kintais = $this->getPastKintais($user_id);
-
-            $current_month = Carbon::now()->format('Y-m');
-            $select_month = request('this_month', $current_month);
             $select_month_format = Carbon::parse($select_month)->format('Y-m');
-
             $data = $this->getKintaiForMonth($user_id, $select_month);
             $kintais = $data->kintais;
             $id = $data->id;
 
+            // 表の準備
             $monthly = $this->getMonthly($select_month);
             $period = $monthly->period;
             $work_starts = [];
@@ -75,7 +86,6 @@ class KintaiController extends Controller
             $break_times = [];
 
             foreach ($period as $day) {
-                // カラム名を合わせる
                 $date_string = $day->toDateString();
                 $columnName1 = 'work_start_' . $day->format('d');
                 $columnName2 = 'work_end_' . $day->format('d');
@@ -93,11 +103,10 @@ class KintaiController extends Controller
 
                     if ($work_start && $work_end) {
                         // 勤務時間を計算し、15分刻みで繰り下げる
-                        $break_time_in_minutes = $break_time ? $break_time->hour * 60 + $break_time->minute : 0;
-                        $minutes_worked = $work_end->diffInMinutes($work_start) - $break_time_in_minutes; // 休憩時間を引く
+                        $break_time_minutes = $break_time ? $break_time->hour * 60 + $break_time->minute : 0;
+                        $minutes_worked = $work_end->diffInMinutes($work_start) - $break_time_minutes;
                         $minutes_worked = floor($minutes_worked / 15) * 15;
 
-                        // 分を時間と分に変換
                         $hours = floor($minutes_worked / 60);
                         $minutes = $minutes_worked % 60;
                         $work_hours[$date_string] = sprintf('%02d:%02d', $hours, $minutes);
@@ -115,7 +124,7 @@ class KintaiController extends Controller
                 }
             }
 
-            return view('kintais.show', compact('id', 'user', 'period', 'work_starts', 'work_ends', 'work_hours', 'attendance_judgment', 'break_times', 'past_kintais', 'current_month', 'select_month', 'select_month_format'));
+            return view('kintais.show', compact('id', 'user', 'period', 'work_starts', 'work_ends', 'break_times', 'work_hours', 'attendance_judgment', 'past_kintais', 'select_month', 'select_month_format', 'this_month'));
         } else {
             abort(404);
         }
@@ -148,7 +157,6 @@ class KintaiController extends Controller
         $now = Carbon::now();
         $work_start = 'work_start_'. $now->format('d');
 
-        // レコード作成に必要なデータを入れる
         $kintai = new Kintai();
         $kintai->user_id = $request->user_id;
         $kintai->this_month = $request->this_month;
@@ -156,26 +164,23 @@ class KintaiController extends Controller
 
         $kintai->save();
 
-        return redirect()->route('kintais.show', $kintai->user_id);
+        return redirect()->route('kintais.show', ['model' => 'user', 'id' => $request->user_id]);
     }
 
     public function stamp($id) {
         $kintai = Kintai::findOrFail($id);
         $this->getUserIdOrFail($kintai);
 
-        // 今日のカラム名を取得
         $now = Carbon::now();
         $today = $now->format('d');
         $work_start = 'work_start_' . $today;
         $work_end = 'work_end_' . $today;
-        $break_time = 'break_time_' . $today;
 
         return view('kintais.stamp')->with([
             'kintai' => $kintai,
             'now' => $now,
             'work_start' => $kintai->$work_start,
             'work_end' => $kintai->$work_end,
-            'break_time' => $kintai->$break_time,
         ]);
     }
 
@@ -193,7 +198,9 @@ class KintaiController extends Controller
             $kintai->$work_start = $now;
         } elseif ($request->has('work_end_') && !$kintai->$work_end) {
             $kintai->$work_end = $now;
-            $kintai->$break_time = Carbon::createFromFormat('H:i', $request->input('break_time_'))->format('H:i');
+            if ($request->has('break_time_') && !$kintai->$break_time) {
+                $kintai->$break_time = Carbon::createFromFormat('H:i', $request->input('break_time_'))->format('H:i');
+            }
         } else {
             return redirect()->route('kintais.stamp', $id)
                 ->with('error', 'すでに打刻されています。');
@@ -201,7 +208,7 @@ class KintaiController extends Controller
 
         $kintai->save();
 
-        return redirect()->route('kintais.show', $kintai->user_id);
+        return redirect()->route('kintais.show', ['model' => 'user', 'id' => $kintai->user_id]);
     }
 
     public function edit($id) {
@@ -220,7 +227,6 @@ class KintaiController extends Controller
         $break_times = [];
 
         foreach ($period as $day) {
-            // カラム名を合わせる
             $date_string = $day->toDateString();
             $columnName1 = 'work_start_' . $day->format('d');
             $columnName2 = 'work_end_' . $day->format('d');
@@ -247,7 +253,6 @@ class KintaiController extends Controller
         $period = $monthly->period;
 
         foreach ($period as $day) {
-            // フォームのnameと合わせる
             $date_string = $day->format('d');
             $work_start_key = 'work_start_' . $date_string;
             $work_end_key = 'work_end_' . $date_string;
@@ -282,6 +287,6 @@ class KintaiController extends Controller
 
         $kintai->save();
 
-        return redirect()->route('kintais.show', $kintai->user_id);
+        return redirect()->route('kintais.show', ['model' => 'user', 'id' => $kintai->user_id]);
     }
 }

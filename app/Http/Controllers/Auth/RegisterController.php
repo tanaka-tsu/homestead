@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Location;
+use App\Models\Condition;
 
 class RegisterController extends Controller
 {
@@ -31,7 +33,13 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
         $this->middleware('guest:admin');
+    }
 
+    public function showRegistrationForm() {
+        $locations = Location::all();
+        $conditions = Condition::all();
+
+        return view('auth.register', compact('locations', 'conditions'));
     }
 
     /**

@@ -74,6 +74,7 @@
     width: 30%;
     display: flex;
     justify-content: space-around;
+    align-items: center;
 }
 .edit-btn{
     margin: 10px 0;
@@ -122,6 +123,9 @@ a{
 /* テーブル */
 table, td, th{
     border-color: #dee2e6;
+}
+td{
+    padding: 0 5px;
 }
 
 /*
@@ -210,12 +214,8 @@ td>a{
 .td-a:hover {
     background-color: #e9ecef;
 }
-.input_form{
-    margin-bottom: -5px;
-}
-.input_form>input{
-    border-radius: 5px;
-    border-color: #dee2e6;
+.options{
+    margin-top: 40px;
 }
 .options-del{
     font-weight: bold;
@@ -227,10 +227,22 @@ td>a{
 .options-del:hover{
     background-color: #e9ecef;
 }
-.third_content-flex{
+.oputions-flex{
     display: flex;
     justify-content: center;
+    align-items: center;
 }
-.third_content-1{
-    margin-right: 50px;
+.options-add>button{
+    font-size: 12px;
+}
+.input_form{
+    margin-right: 5px;
+    padding: 2px 5px;
+}
+.input_form>input{
+    border-radius: 5px;
+    border-color: #dee2e6;
+}
+.employee-data{
+    margin-top: 20px;
 }

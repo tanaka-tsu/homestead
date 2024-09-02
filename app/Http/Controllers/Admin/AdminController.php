@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Kintai;
 use App\Models\Location;
 use App\Models\Condition;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -23,9 +25,11 @@ class AdminController extends Controller
     }
 
     public function index() {
-        $users = User::latest()->paginate(5); // 本当は20にしたい
+        $users_list = User::latest()->paginate(5); // 本当は20にしたい
+        $locations = Location::all();
+        $conditions = Condition::all();
 
-        return view('admin.index', compact('users'));
+        return view('admin.index', compact('users_list', 'locations', 'conditions'));
     }
 
     public function show($id) {

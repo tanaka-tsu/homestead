@@ -1,18 +1,12 @@
 @extends('layouts.app')
-{{-- layoutsフォルダの中にあるapp.blade.phpを継承 --}}
 
 @section('content')
-{{-- @extends内の@yield('content')部分に@endsection部分までを表示させる宣言 --}}
 <div class="container">
     <div class="card-body">
         @if(Auth::guard('admin')->check())
             <div class="back"></div>
             <a href="{{ route('admin.index') }}" class="back-btn back-index">戻る</a>
-        @endif
-        <div class="card-header">{{ $user->name }}さんの勤怠表</div>
-
-        @if(Auth::guard('admin')->check())
-            <div class="work-schedule">
+            <div class="employee-data">
                 <table border="1" align="center">
                     <tr>
                         <th width="20%">社員番号</th>
@@ -29,19 +23,22 @@
                 </table>
             </div>
         @endif
+        <div class="card-header">{{ $user->name }}さんの勤怠表</div>
 
-        <form method="GET" action="{{ route('kintais.show', $user->id) }}">
-            <div class="seledted-month">
-                <select name="this_month" onchange="this.form.submit()">
-                    @foreach ($past_kintais as $month)
-                    <option value="{{ $month }}" {{ $select_month == $month ? 'selected' : '' }}>
-                            {{ \Carbon\Carbon::parse($month)->format('Y/m') }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </form>
-        @if ($id && $select_month_format == $current_month && $user->id == Auth::id())
+        @if ($id)
+            <form method="GET" action="{{ route('kintais.show', ['model' => 'user', 'id' => $user->id]) }}">
+                <div class="seledted-month">
+                    <select name="this_month" onchange="this.form.submit()">
+                        @foreach ($past_kintais as $month)
+                        <option value="{{ $month }}" {{ $select_month == $month ? 'selected' : '' }}>
+                                {{ \Carbon\Carbon::parse($month)->format('Y/m') }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </form>
+        @endif
+        @if ($id && $user->id == Auth::id() && $select_month_format == $this_month)
             <div class="edit-btn"><a href="{{ route('kintais.edit', $id) }}">
                 編集モード
             </a></div>

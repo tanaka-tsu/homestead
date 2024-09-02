@@ -6,12 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Location;
 use App\Models\Condition;
-use App\Models\Admin;
 
 class OptionController extends Controller
 {
     public function __construct() {
         $this->middleware('auth:admin');
+    }
+
+    protected function index() {
+        $id = Auth::id();
+        $locations = Location::all();
+        $conditions = Condition::all();
+
+        return view('options.index', compact('locations', 'conditions', 'id'));
     }
 
     public function store(Request $request) {
@@ -28,7 +35,7 @@ class OptionController extends Controller
             Condition::create(['detail' => $request->detail]);
         }
 
-        return redirect()->route('admin.show', $admin_id);
+        return redirect()->route('options.index', $admin_id);
     }
 
     public function locationDestroy($id) {
@@ -36,7 +43,7 @@ class OptionController extends Controller
         $location = Location::findOrfail($id);
         $location->delete();
 
-        return redirect()->route('admin.show', $admin_id);
+        return redirect()->route('options.index', $admin_id);
     }
 
     public function conditionDestroy($id) {
@@ -44,13 +51,6 @@ class OptionController extends Controller
         $condition = Condition::findOrfail($id);
         $condition->delete();
 
-        return redirect()->route('admin.show', $admin_id);
-    }
-
-    protected function options() {
-        $locations = Location::all();
-        $conditions = Condition::all();
-
-        return view('auth.register', compact('locations', 'conditions'));
+        return redirect()->route('options.index', $admin_id);
     }
 }

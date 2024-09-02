@@ -24,9 +24,9 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                @if($auth_group === 'admin')
+                @if($auth_group == 'admin')
                     <a class="navbar-brand" href="{{ route('admin.index') }}">
-                @elseif($auth_group === 'user')
+                @elseif($auth_group == 'user')
                     <a class="navbar-brand" href="{{ route('kintais.create') }}">
                 @else
                     <a class="navbar-brand" href="{{ route('login') }}">
@@ -67,14 +67,14 @@
                                     </form>
                                 </div>
                             </li>
-                        @elseif(Auth::check() && $auth_group === 'user')
+                        @elseif(Auth::check() && $auth_group == 'user')
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="{{ route('kintais.create') }}">
                                     打刻
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link" href="{{ route('kintais.show', Auth::id()) }}">
+                                <a class="nav-link" href="{{ route('kintais.show', ['model' => 'user', 'id' => Auth::id()]) }}">
                                     勤怠表
                                 </a>
                             </li>
@@ -96,26 +96,22 @@
                                     </form>
                                 </div>
                             </li>
-                        @elseif(!Auth::check())
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">
-                                        新規登録
-                                    </a>
-                                </li>
-                            @endif
-                            @if (Route::has('login'))
-                                <li>
-                                    <a class="nav-link" href="{{ route('login') }}">
-                                        ログイン
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.login') }}">
-                                        ＊
-                                    </a>
-                                </li>
-                            @endif
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">
+                                    新規登録
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="{{ route('login') }}">
+                                    ログイン
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.login') }}">
+                                    ＊
+                                </a>
+                            </li>
                         @endif
                     </ul>
                 </div>
