@@ -46,8 +46,8 @@ class LoginController extends Controller
             'admin_id'   => 'required',
             'password' => 'required|min:8'
         ],[
-            'admin_id.required' => '管理者IDは必須です。',
-            'password.required' => 'パスワードは必須です。',
+            'admin_id.required' => '管理者IDが入力されていません。',
+            'password.required' => 'パスワードが入力されていません。',
         ]);
 
         // hasTooManyLoginAttempts メソッドが存在し、かつログイン試行回数が多すぎる場合、ロックアウトイベントを発生させます
@@ -64,7 +64,9 @@ class LoginController extends Controller
 
         $this->incrementLoginAttempts($request);
 
-        return back()->withInput($request->only('admin_id', 'remember'));
+        return back()->withErrors([
+            'admin_id' => '管理者IDまたはパスワードが一致しません。',
+        ])->withInput($request->only('admin_id', 'remember'));
     }
 
     public function logout(Request $request)

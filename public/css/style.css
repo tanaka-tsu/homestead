@@ -35,25 +35,24 @@
 .card-header{
     font-weight: bold;
 }
-/* エラー */
-.error{
-    margin: 20px 0;
-    color: red;
-    text-align: center;
-}
-.invalid-feedback{
-    color: red;
-}
-/* 下部コンテンツ */
 .second_content{
     margin: 50px 0 10px 0;
     font-weight: bold;
     text-align: center;
 }
-.third_content{
-    margin: 50px 0 20px 0;
-    font-weight: bold;
+/* エラー */
+.error{
+    color: red;
     text-align: center;
+}
+td>.error{
+    text-align: left;
+}
+.stamp-error{
+    margin: 20px 0;
+}
+.invalid-feedback{
+    color: red;
 }
 /* 戻るボタン */
 .back{
@@ -251,7 +250,8 @@ td>a{
     border-radius: 5px;
     border-color: #dee2e6;
 }
-.input_form>label>select{
+.input_form>label>select,
+.input_form>select{
     border-radius: 5px;
     border-color: #dee2e6;
     border-style: inset;

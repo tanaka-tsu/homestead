@@ -45,7 +45,7 @@ class UserController extends Controller
                 'office' => 'required',
                 'name' => 'required',
                 'terms' => 'required',
-                'email' => 'required',
+                'email' => 'required|unique:users',
             ],[
                 'employee_id.required' => '社員番号が入力されていません。',
                 'office.required' => '所属が選択されていません。',

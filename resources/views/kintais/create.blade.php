@@ -13,11 +13,11 @@
 
             <input type="hidden" name="user_id" value="{{ Auth::id() }}">
             @error('user_id')
-                <div class="error">{{ $message }}</div>
+                <div class="error stamp-error">{{ $message }}</div>
             @enderror
             <input type="hidden" name="this_month" value="{{ $now->format("Y/m/d") }}">
             @error('this_month')
-                <div class="error">{{ $message }}</div>
+                <div class="error stamp-error">{{ $message }}</div>
             @enderror
             <div class="stamp-btn"><button type="submit" name="work_start_">出勤</button></div>
         </form>
