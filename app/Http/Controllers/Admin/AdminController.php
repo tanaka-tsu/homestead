@@ -25,7 +25,7 @@ class AdminController extends Controller
     }
 
     public function index() {
-        $users_list = User::latest()->paginate(5); // 本当は20にしたい
+        $users_list = User::latest()->paginate(20);
         $locations = Location::all();
         $conditions = Condition::all();
         return view('admin.index', compact('users_list', 'locations', 'conditions'));
@@ -82,12 +82,12 @@ class AdminController extends Controller
         }
 
         $admin->update(['password' => Hash::make($request->get('new-password'))]);
+
         return redirect()->route('admin.show', $id)
             ->with('flash_message', 'パスワードを変更しました。');
     }
 
     public function search(Request $request) {
-        $users_list = User::latest()->paginate(5);
         $locations = Location::all();
         $conditions = Condition::all();
 
@@ -95,7 +95,7 @@ class AdminController extends Controller
         $month = Carbon::parse($month_input)->format('Y-m');
         $query = Kintai::query();
 
-        // 年月が指定されている場合
+        // 年月が指定されている場合（必須）
         if ($request->filled('month')) {
             $query->where('this_month', 'LIKE', "{$month}%");
 
@@ -128,14 +128,12 @@ class AdminController extends Controller
                 });
                 $results = $query->get();
             }
-        } else {
-            // 年月が指定されていない場合は空のコレクションを返す
-            $results = collect();
         }
 
+        $results = $query->orderBy('this_month', 'asc')->paginate(20);
         $message = $results->isEmpty() ? '該当するデータがありません。' : '';
         session()->flashInput($request->all());
 
-        return view('admin.index', compact('users_list', 'locations', 'conditions', 'results', 'message'));
+        return view('admin.search', compact('locations', 'conditions', 'results', 'message'));
     }
 }

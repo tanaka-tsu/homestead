@@ -53,7 +53,7 @@
 
         <div class="edit-btn options">
             <a href="{{ route('options.index') }}">
-                支社・勤務条件確認
+                支社・勤務条件変更
             </a>
         </div>
     </div>

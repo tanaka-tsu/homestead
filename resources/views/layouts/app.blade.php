@@ -45,8 +45,13 @@
                         <!-- Authentication Links -->
                         @if(Auth::guard('admin')->check())
                             <li>
-                                <a class="nav-link" href="{{ route('admin.index') }}">
+                                <a class="nav-link" href="{{ route('admin.search') }}">
                                     勤怠データ
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="{{ route('admin.index') }}">
+                                    社員一覧
                                 </a>
                             </li>
                             <li>

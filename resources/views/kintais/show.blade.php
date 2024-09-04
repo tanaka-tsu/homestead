@@ -5,7 +5,7 @@
     <div class="card-body">
         @if(Auth::guard('admin')->check())
             <div class="back"></div>
-            <a href="{{ route('admin.index') }}" class="back-btn back-index">戻る</a>
+            <a href="{{ url()->previous() }}" class="back-btn back-index">戻る</a>
             <div class="employee-data">
                 <table border="1" align="center">
                     <tr>
