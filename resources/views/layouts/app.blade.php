@@ -25,7 +25,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 @if($auth_group == 'admin')
-                    <a class="navbar-brand" href="{{ route('admin.index') }}">
+                    <a class="navbar-brand" href="{{ route('admin.search') }}">
                 @elseif($auth_group == 'user')
                     <a class="navbar-brand" href="{{ route('kintais.create') }}">
                 @else

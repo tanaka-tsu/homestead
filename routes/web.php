@@ -39,7 +39,7 @@ Route::prefix('admin')->group(function () {
         Route::post('logout', [LoginController::class, 'logout'])
             ->name('admin.logout');
 
-        Route::get('', [AdminController::class, 'index'])
+        Route::get('index', [AdminController::class, 'index'])
             ->name('admin.index');
 
         Route::get('{id}', [AdminController::class,'show'])
@@ -70,7 +70,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('condition_destroy/{id}', [OptionController::class, 'conditionDestroy'])
             ->name('options.conditionDestroy');
 
-        Route::get('search', [AdminController::class, 'search'])
+        Route::get('', [AdminController::class, 'search'])
             ->name('admin.search');
     });
 });
