@@ -4,7 +4,11 @@
 <div class="container">
     <div class="card-body">
         <div class="back"></div>
-        <a href="{{ route('user.show', $id) }}" class="back-btn">戻る</a>
+        @if(Auth::check() && $auth_group === 'user')
+            <a href="{{ route('user.show', $id) }}" class="back-btn">戻る</a>
+        @elseif(Auth::guard('admin')->check())
+            <a href="{{ route('admin.index') }}" class="back-btn">戻る</a>
+        @endif
         <div class="card-header">社員情報の編集</div>
 
         <div class="employee-edit">
@@ -38,6 +42,9 @@
                                         @endforeach
                                     </select>
                                     <div class="not-edit">{{ $user->office }}</div>
+                                    {{-- @error('office')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror --}}
                                 </td>
                             </tr>
                         </label></div>
@@ -51,6 +58,9 @@
                                         @endforeach
                                     </select>
                                     <div class="not-edit">{{ $user->terms }}</div>
+                                    {{-- @error('terms')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror --}}
                                 </td>
                             </tr>
                         </label></div>
@@ -113,11 +123,17 @@
                                 <td>
                                     <input type="hidden" name="name" value="{{ old('name', $user->name) }}">
                                     <div class="not-edit">{{ $user->name }}</div>
+                                    {{-- @error('name')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror --}}
                                 </td>
                             </tr>
                         </label></div>
 
                         <input type="hidden" name="email" value="{{ old('email', $user->email) }}">
+                        {{-- @error('email')
+                            <div class="error">{{ $message }}</div>
+                        @enderror --}}
                     @endif
                 </table>
             </form>

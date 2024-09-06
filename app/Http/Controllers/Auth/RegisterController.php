@@ -37,7 +37,7 @@ class RegisterController extends Controller
 
     public function showRegistrationForm() {
         $locations = Location::all();
-        $conditions = Condition::all();
+        $conditions = Condition::orderBy('detail', 'asc')->get();
 
         return view('auth.register', compact('locations', 'conditions'));
     }

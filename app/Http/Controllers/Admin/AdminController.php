@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\User;
@@ -46,7 +47,7 @@ class AdminController extends Controller
         $admin = $this->findAdminOrFail($id);
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
+            'email' => ['required', 'email', Rule::unique('admins')->ignore($id)],
             'admin_id' => 'required',
         ],[
             'name.required' => '名前が入力されていません。',
@@ -89,7 +90,7 @@ class AdminController extends Controller
 
     public function search(Request $request) {
         $locations = Location::all();
-        $conditions = Condition::all();
+        $conditions = Condition::orderBy('detail', 'asc')->get();
 
         $month_input = $request->input('month');
         $month = Carbon::parse($month_input)->format('Y-m');

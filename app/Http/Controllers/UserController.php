@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\Location;
 use App\Models\Condition;
@@ -29,7 +30,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         if ($id == Auth::id() || Auth::guard('admin')->check()) {
             $locations = Location::all();
-            $conditions = Condition::all();
+            $conditions = Condition::orderBy('detail', 'asc')->get();
 
             return view('user.edit', compact('user', 'id', 'locations', 'conditions'));
         } else {
@@ -45,7 +46,7 @@ class UserController extends Controller
                 'office' => 'required',
                 'name' => 'required',
                 'terms' => 'required',
-                'email' => 'required|unique:users',
+                'email' => ['required', 'email', Rule::unique('users')->ignore($id)],
             ],[
                 'employee_id.required' => '社員番号が入力されていません。',
                 'office.required' => '所属が選択されていません。',
@@ -54,7 +55,11 @@ class UserController extends Controller
                 'email.required' => 'メールアドレスが入力されていません。',
             ]);
             $user->update($request->only(['employee_id', 'office', 'name', 'terms', 'email']));
-            return redirect()->route('user.show', $user->id);
+            if ($id == Auth::id()) {
+                return redirect()->route('user.show', $user->id);
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('admin.index');
+            }
         } else {
             abort(404);
         }

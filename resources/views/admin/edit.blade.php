@@ -18,6 +18,16 @@
                 <table border="1" align="center">
                     <div class="user-edit"><label>
                         <tr>
+                            <th>管理者ID</th>
+                            <td><input type="text" name="admin_id" value="{{ old('admin_id', $admin->admin_id) }}"></td>
+                        </tr>
+                    </label></div>
+                    @error('admin_id')
+                        <div class="error">{{ $message }}</div>
+                    @enderror
+
+                    <div class="user-edit"><label>
+                        <tr>
                             <th>名前</th>
                             <td><input type="text" name="name" value="{{ old('name', $admin->name) }}"></td>
                         </tr>
@@ -25,6 +35,7 @@
                     @error('name')
                         <div class="error">{{ $message }}</div>
                     @enderror
+
                     <div class="user-edit"><label>
                         <tr>
                             <th>メールアドレス</th>
@@ -32,15 +43,6 @@
                         </tr>
                     </label></div>
                     @error('email')
-                        <div class="error">{{ $message }}</div>
-                    @enderror
-                    <div class="user-edit"><label>
-                        <tr>
-                            <th>管理者ID</th>
-                            <td><input type="text" name="admin_id" value="{{ old('admin_id', $admin->admin_id) }}"></td>
-                        </tr>
-                    </label></div>
-                    @error('admin_id')
                         <div class="error">{{ $message }}</div>
                     @enderror
                 </table>

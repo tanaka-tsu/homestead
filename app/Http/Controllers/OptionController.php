@@ -16,7 +16,7 @@ class OptionController extends Controller
     protected function index() {
         $id = Auth::id();
         $locations = Location::all();
-        $conditions = Condition::all();
+        $conditions = Condition::orderBy('detail', 'asc')->get();
 
         return view('options.index', compact('locations', 'conditions', 'id'));
     }

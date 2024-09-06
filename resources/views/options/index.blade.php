@@ -5,7 +5,7 @@
     <div class="card-body">
         <div class="back"></div>
         <a href="{{ route('admin.show', $id) }}" class="back-btn">戻る</a>
-        <div class="card-header">支社・勤務条件の確認</div>
+        <div class="card-header">支社・勤務条件</div>
             <form action="{{ route('options.store') }}" method="POST">
                 @csrf
 
