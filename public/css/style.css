@@ -1,0 +1,262 @@
+/*
+ヘッダー
+*/
+.navbar{
+    /* ヘッダー全体 */
+    background-color: #192f60;
+    padding: 10px;
+    margin: -10px -10px 0 -10px;
+}
+.navbar-brand{
+    /* タイトル */
+    font-size: 18px;
+    font-weight: bold;
+    color: azure;
+}
+.collapse{
+    /* リンク全体 */
+    display: flex;
+    justify-content: space-between;
+}
+.navbar-nav,.nav-item{
+    /* 左右のリンク */
+    display: flex;
+    list-style: none;
+}
+.nav-link,.dropdown-item{
+    margin-left: 15px;
+    color: azure;
+}
+
+/*
+ヘッダーとメイン
+*/
+/* コンテンツタイトル */
+.card-header{
+    font-weight: bold;
+}
+.second_content{
+    margin: 50px 0 10px 0;
+    font-weight: bold;
+    text-align: center;
+}
+/* エラー */
+.error{
+    color: red;
+    text-align: center;
+}
+td>.error{
+    text-align: left;
+}
+.stamp-error{
+    margin: 20px 0;
+}
+.invalid-feedback{
+    color: red;
+}
+/* 戻るボタン */
+.back{
+    height: 20px;
+}
+.back-btn{
+    color: white;
+    margin-left: 20%;
+    padding: 5px 15px;
+    background-color: #00ac9a;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+/* 編集ボタン */
+.btn-flex{
+    margin: 0 35%;
+    width: 30%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.edit-btn{
+    margin: 10px 0;
+    text-align: center;
+}
+.edit-btn>button,.edit-btn>a{
+    color: white;
+    font-size: 14px;
+    padding: 5px 15px;
+    background-color: #00ac9a;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+/* ホバー */
+.edit-btn>button:hover,
+.edit-btn>a:hover,
+.back-btn:hover,
+.stamp-btn>button:hover{
+    opacity: 0.7;
+}
+/* ページネーション */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+}
+.pagination li {
+    display: inline;
+}
+.pagination li a {
+    color: #00ac9a;
+    padding: 6px 12px;
+    border: 1px solid #dee2e6;
+    margin-left: -1px;
+}
+.pagination li a:hover {
+    background-color: #e9ecef;
+}
+.pagination .active span {
+    background-color: #00ac9a;
+    color: white;
+    border-color: #00ac9a;
+    padding: 6px 12px;
+}
+/* リンク */
+a{
+    text-decoration: none;
+    color: #00885a;
+    cursor: pointer;
+}
+/* テーブル */
+table, td, th{
+    border-color: #dee2e6;
+}
+td{
+    padding: 0 5px;
+}
+
+/*
+新規登録・ログインフォーム
+*/
+.card-header,.mb-3,.mb-0{
+    margin: 15px;
+    text-align: center;
+}
+.form-check-label,.btn-link{
+    font-size: 14px;
+}
+
+/*
+打刻画面
+*/
+.today,.now{
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+.stamp-btn{
+    margin-top: 30px;
+    text-align: center;
+}
+.stamp-btn>button{
+    font-size: 36px;
+    padding: 5px 15px;
+    background-color: #00ac9a;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+/*
+勤怠表
+*/
+.seledted-month{
+    text-align: center;
+    margin: 15px 0;
+}
+.year-month{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.delete{
+    color: #00608d;
+    font-size: 14px;
+}
+.red-text {
+    color: red;
+}
+
+/*
+マイページ
+*/
+.mypage-edit{
+    margin-top: 20px;
+}
+.employee-info{
+    margin-top: 15px;
+}
+.user-edit{
+    text-align: center;
+}
+/* パスワード変更 */
+.change-success{
+    margin: 20px 0;
+    color: #00608d;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+.not-edit{
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+/* 管理者画面 */
+.back-index{
+    margin-left: 30px;
+}
+td>a{
+    font-weight: bold;
+}
+.td-a:hover {
+    background-color: #e9ecef;
+}
+.options{
+    margin-top: 40px;
+}
+.options-del{
+    font-weight: bold;
+    border-style: none;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+}
+.options-del:hover{
+    background-color: #e9ecef;
+}
+.oputions-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.options-add>button{
+    font-size: 12px;
+}
+.input_form{
+    margin-right: 5px;
+    padding: 2px 5px;
+}
+.input_form>input{
+    border-radius: 5px;
+    border-color: #dee2e6;
+}
+.input_form>label>select,
+.input_form>select{
+    border-radius: 5px;
+    border-color: #dee2e6;
+    border-style: inset;
+    border-width: 2px;
+}
+.employee-data{
+    margin-top: 20px;
+}
